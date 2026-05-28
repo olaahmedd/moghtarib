@@ -8,6 +8,6 @@ class UserModel{
   UserModel.fromJson(Map<String, dynamic> userMap){
     id = userMap['id']?.toString();
     email= userMap['email'];
-    accessToken= userMap['access_token'];
+    accessToken= userMap['token'];
   }
 }

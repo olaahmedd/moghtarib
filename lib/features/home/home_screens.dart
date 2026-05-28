@@ -1,70 +1,15 @@
 import 'package:flutter/material.dart';
-
-import '../../core/utils/app_assets.dart';
-import '../../core/utils/app_colors.dart';
-//import '../../core/widgets/custom_appbar.dart';
-
-class BaseHomeScreen extends StatelessWidget {
-  final String title;
-  const BaseHomeScreen({super.key, required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.scaffoldBackground,
-      appBar: AppBar(
-        backgroundColor: AppColors.scaffoldBackground,
-        centerTitle: true,
-        title: Image.asset(
-          AppAssets.logo,
-          width: 38,
-          height: 31,
-          fit: BoxFit.scaleDown,
-        ),
-      ),
-      drawer: Drawer(
-        backgroundColor: AppColors.scaffoldBackground,
-        child: SafeArea(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              DrawerHeader(
-                decoration: BoxDecoration(color: AppColors.scaffoldBackground),
-                child: Center(
-                  child: Image.asset(
-                    AppAssets.logo,
-                    width: 60,
-                    height: 60,
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.home, color: Colors.white),
-                title: Text(
-                  title,
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      body: Center(
-        child: Text(
-          title,
-          style: const TextStyle(color: Colors.white, fontSize: 22),
-        ),
-      ),
-    );
-  }
-}
+//import '../../core/utils/app_assets.dart';
+//import '../../core/utils/app_colors.dart';
+import 'presentation/views/base_home_screen.dart';
+import 'admin/view/admin_home_view.dart';
 
 class AdminHome extends StatelessWidget {
   const AdminHome({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const _EmptyRoleBody(roleTitle: 'Admin Home');
+    return const AdminHomeView();
   }
 }
 
@@ -73,7 +18,10 @@ class StudentHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _EmptyRoleBody(roleTitle: 'Student Home');
+    return const BaseHomeScreen(
+      drawerTitle: 'Student',
+      body: _PlaceholderBody(title: 'Student Home'),
+    );
   }
 }
 
@@ -82,7 +30,10 @@ class SemsarHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _EmptyRoleBody(roleTitle: 'Semsar Home');
+    return const BaseHomeScreen(
+      drawerTitle: 'Semsar',
+      body: _PlaceholderBody(title: 'Semsar Home'),
+    );
   }
 }
 
@@ -91,21 +42,24 @@ class SanaieeHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _EmptyRoleBody(roleTitle: 'Sanaiee Home');
-  }
-}
-
-class _EmptyRoleBody extends StatelessWidget {
-  final String roleTitle;
-  const _EmptyRoleBody({required this.roleTitle});
-
-  @override
-  Widget build(BuildContext context) {
-    // Keep AppBar + Drawer + scaffold background constant.
-    // Only the body is intentionally empty for now (per request).
-    return BaseHomeScreen(
-      title: roleTitle,
+    return const BaseHomeScreen(
+      drawerTitle: 'Sanaiee',
+      body: _PlaceholderBody(title: 'Sanaiee Home'),
     );
   }
 }
 
+class _PlaceholderBody extends StatelessWidget {
+  final String title;
+  const _PlaceholderBody({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        title,
+        style: const TextStyle(color: Colors.white, fontSize: 22),
+      ),
+    );
+  }
+}

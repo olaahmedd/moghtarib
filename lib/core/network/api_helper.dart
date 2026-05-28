@@ -5,12 +5,13 @@ import'package:moghtarib/core/cache/cache_keys.dart';
 import'package:dartz/dartz.dart';
 
 
+// تأكد من استيراد الملفات الأخرى الخاصة بك مثل EndPoints و CacheHelper هنا
+
 abstract class ApiHelper {
   static final Dio dio = Dio(BaseOptions(baseUrl: EndPoints.baseUrl))
     ..interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
-          // Debug logs (optional)
           print('REQUEST[${options.method}] => PATH: ${options.path}');
           print('HEADERS: ${options.headers}');
           print('DATA: ${options.data}');
@@ -22,27 +23,24 @@ abstract class ApiHelper {
         },
         onError: (error, handler) async {
           final errorMsg = _extractMessage(error);
-
           final requestOptions = error.requestOptions;
           
           if (requestOptions.path.contains(EndPoints.login) || 
-      requestOptions.path.contains(EndPoints.register)) {
-    return handler.next(error); // مرري الخطأ الحقيقي القادم من السيرفر فوراً بدون لف ودوران
-  }
+              requestOptions.path.contains(EndPoints.register)) {
+            return handler.next(error); 
+          }
 
           if (errorMsg != null && errorMsg.contains('Token has expired.')) {
             try {
               final dioRefresh = Dio(BaseOptions(baseUrl: EndPoints.baseUrl));
               final refreshToken = CacheHelper.getValue(CacheKeys.refreshToken);
 
-              // If refresh endpoint isn't configured in your EndPoints, skip refresh flow.
               if (EndPoints.refresh == null) {
                 return handler.next(error);
               }
 
               final refreshResponse = await dioRefresh.post(
-                EndPoints.refresh!,
-
+                EndPoints.refresh,
                 options: Options(
                   headers: {
                     'Authorization': 'Bearer $refreshToken',
@@ -50,8 +48,7 @@ abstract class ApiHelper {
                 ),
               );
 
-              if (refreshResponse.statusCode == 200 &&
-                  refreshResponse.data != null) {
+              if (refreshResponse.statusCode == 200 && refreshResponse.data != null) {
                 final map = refreshResponse.data as Map<String, dynamic>;
                 final newAccessToken = map['access_token'] as String;
 
@@ -60,12 +57,9 @@ abstract class ApiHelper {
                   value: newAccessToken,
                 );
 
-                // --- Clone the request options safely ---
                 final retryOptions = Options(
                   method: requestOptions.method,
-                  headers: Map<String, dynamic>.from(
-                    requestOptions.headers,
-                  ),
+                  headers: Map<String, dynamic>.from(requestOptions.headers),
                   responseType: requestOptions.responseType,
                   contentType: requestOptions.contentType,
                   followRedirects: requestOptions.followRedirects,
@@ -73,13 +67,11 @@ abstract class ApiHelper {
                   receiveTimeout: requestOptions.receiveTimeout,
                   sendTimeout: requestOptions.sendTimeout,
                   extra: requestOptions.extra,
-                  // Keep existing query params/form-data/etc via requestOptions
                 );
 
                 retryOptions.headers ??= {};
                 retryOptions.headers!['Authorization'] = 'Bearer $newAccessToken';
 
-                // Retry the same request; do NOT rebuild FormData
                 final newResponse = await dio.request<dynamic>(
                   requestOptions.path,
                   data: requestOptions.data,
@@ -94,7 +86,6 @@ abstract class ApiHelper {
               }
             } catch (e) {
               print("Refresh token failed: $e");
-              // Fall through to original error
             }
           }
 
@@ -111,6 +102,7 @@ abstract class ApiHelper {
     }
     return error.message;
   }
+
   static String _handleDioError(dynamic e) {
     print("❌ FULL DIO ERROR: ${e.toString()}");
     String errorMsg = 'Something went wrong';
@@ -119,19 +111,15 @@ abstract class ApiHelper {
       final data = e.response?.data;
 
       if (data != null) {
-        // 🚨 السطر الأهم: سيطبع لك في الـ Console تفاصيل الـ Validation القادمة من السيرفر بالملي
         print("🚨 SERVER VALIDATION RESPONSE: $data");
 
         if (data is Map) {
-          // إذا كان السيرفر يرسل الأخطاء داخل كائن "errors" (وهو الشائع في ASP.NET و Laravel)
           if (data['errors'] != null) {
             return _extractErrorsFromMap(data['errors']);
           }
-          // إذا كان هناك رسالة مباشرة
           if (data['message'] != null) {
             return data['message'].toString();
           }
-          // إذا كان الـ Map نفسه يحتوي على رسائل الخطأ مباشرة
           return data.values.first.toString();
         } else if (data is String) {
           return data;
@@ -143,7 +131,6 @@ abstract class ApiHelper {
     return errorMsg;
   }
 
-  // دالة مساعدة لاستخراج أول خطأ يظهر للمستخدم بشكل نظيف
   static String _extractErrorsFromMap(dynamic errors) {
     if (errors is Map) {
       final firstError = errors.values.first;
@@ -154,25 +141,10 @@ abstract class ApiHelper {
     }
     return errors.toString();
   }
-  // static String _handleDioError(dynamic e) {
-  //   // print(e.toString());
-  //   print("❌ FULL DIO ERROR: ${e.toString()}");
-  //   String errorMsg = 'Something went wrong';
-  //   if (e is DioException) {
-  //     final data = e.response?.data;
-  //     // if (data != null && data is Map) {
-  //     if (data != null) {
-  //       // 🚨 السطر الأهم: سيطبع لك في الـ Console تفاصيل الـ Validation القادمة من السيرفر بالملي
-  //       print("🚨 SERVER VALIDATION RESPONSE: $data")
-  //       errorMsg = data['message']?.toString() ?? errorMsg;
-  //     } else {
-  //       errorMsg = e.message ?? errorMsg;
-  //     }
-  //   }
-  //   return errorMsg;
-  // }
 
-  static Future<Either<String, Map<String, dynamic>>> post({
+  // ✨ تعديل نوع الـ Return ليكون dynamic لجميع الدوال بالأسفل لتقبل الـ List والـ Map معاً
+
+  static Future<Either<String, dynamic>> post({
     required String endPoint,
     Map<String, dynamic>? data,
     Map<String, dynamic>? headers,
@@ -197,13 +169,13 @@ abstract class ApiHelper {
         ),
       );
 
-      return right(response.data as Map<String, dynamic>);
+      return right(response.data); // ✨ تم إزالة الـ Type Cast الإجباري
     } catch (e) {
       return left(_handleDioError(e));
     }
   }
 
-  static Future<Either<String, Map<String, dynamic>>> get({
+  static Future<Either<String, dynamic>> get({
     required String endPoint,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? queryParameters,
@@ -226,13 +198,13 @@ abstract class ApiHelper {
         ),
       );
 
-      return right(response.data as Map<String, dynamic>);
+      return right(response.data); // ✨ تم إزالة الـ Type Cast الإجباري
     } catch (e) {
       return left(_handleDioError(e));
     }
   }
 
-  static Future<Either<String, Map<String, dynamic>>> put({
+  static Future<Either<String, dynamic>> put({
     required String endPoint,
     Map<String, dynamic>? data,
     Map<String, dynamic>? headers,
@@ -256,13 +228,13 @@ abstract class ApiHelper {
         ),
       );
 
-      return right(response.data as Map<String, dynamic>);
+      return right(response.data); // ✨ تم إزالة الـ Type Cast الإجباري
     } catch (e) {
       return left(_handleDioError(e));
     }
   }
 
-  static Future<Either<String, Map<String, dynamic>>> delete({
+  static Future<Either<String, dynamic>> delete({
     required String endPoint,
     Map<String, dynamic>? data,
     Map<String, dynamic>? headers,
@@ -286,7 +258,7 @@ abstract class ApiHelper {
         ),
       );
 
-      return right(response.data as Map<String, dynamic>);
+      return right(response.data); // ✨ تم إزالة الـ Type Cast الإجباري
     } catch (e) {
       return left(_handleDioError(e));
     }

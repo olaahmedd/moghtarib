@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moghtarib/core/utils/app_colors.dart';
+import 'package:moghtarib/core/utils/jwt_role_parser.dart';
+import 'package:moghtarib/features/auth/cubit/login/login_cubit.dart';
+import 'package:moghtarib/features/auth/cubit/login/login_state.dart';
+import 'package:moghtarib/features/home/admin/view/admin_home_view.dart';
+import '../../home/presentation/views/base_home_screen.dart';
 import 'package:moghtarib/features/home/home_screens.dart';
 
-import '../../../core/utils/app_colors.dart';
-// import '../../../core/widgets/default_text_field.dart';
-// import '../../../core/utils/app_assets.dart';
-
-import '../cubit/login/login_cubit.dart';
-import '../cubit/login/login_state.dart';
-
-
-// import '../../../core/widgets/custom_appbar.dart';
-
-// import '../../../core/widgets/custom_btn.dart';
-
-// import 'package:moghtarib/features/screen/welcome.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
@@ -26,19 +19,54 @@ class LoginView extends StatelessWidget {
       child: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state is LoginSuccessState) {
-      // 👈 انقل المستخدم من هنا إجبارياً بالـ Navigator العادي بتاع فلاتر لتجربة التنقل
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const BaseHomeScreen( title: 'Home')),
-      );
-    }
-    if (state is LoginErrorState) {
-      // عشان لو في أيرور مخفي يظهرلك في شاشة الموبايل
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(state.error)),
-      );
-    }
-          // navigation happens inside cubit via callback routing in this implementation
+            // 1. هنجيب الـ role اللي راجعة من الـ state بعد نجاح اللوج ان
+            // (تأكدي من اسم المتغير جوه الـ LoginSuccessState عندك، لو اسمه userModel.type مثلاً عدليه)
+            final token = state.userModel.accessToken;
+            final userRole = JwtRoleParser.extractRole(token ?? '');
+
+            // 2. فحص الـ Role وتوجيه المستخدم للصفحة الصح إجبارياً
+            if (userRole == 'Admin') {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  // هنا بناديه على صفحة الـ AdminHomeScreen اللي لسه مصلحين الـ import بتاعها
+                  builder: (_) => const AdminHomeView(), 
+                ),
+              );
+            } else if (userRole == 'Student') {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const StudentHome()),
+              );
+            } else if (userRole == 'Semsar') {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const SemsarHome()),
+              );
+            } else {
+              // صفحة احتياطية لو الرول مش مطابقة
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => BaseHomeScreen(
+                    drawerTitle: 'Home',
+                    body: const Center(
+                      child: Text(
+                        'Home',
+                        style: TextStyle(color: Colors.white, fontSize: 22),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }
+          }
+          
+          if (state is LoginErrorState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.error)),
+            );
+          }
         },
         child: BlocBuilder<LoginCubit, LoginState>(
           builder: (context, state) {
@@ -111,7 +139,6 @@ class LoginView extends StatelessWidget {
                                     backgroundColor: AppColors.primary,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
-                                      
                                     ),
                                     elevation: 0,
                                   ),

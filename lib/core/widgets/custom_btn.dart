@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../utils/app_colors.dart';
+import 'package:moghtarib/core/utils/app_assets.dart';
+import 'package:moghtarib/core/utils/app_colors.dart';
 
 
 class CustomBtn extends StatelessWidget {

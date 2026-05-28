@@ -1,4 +1,4 @@
-import 'package:moghtarib/features/auth/model/user_model.dart';
+  import 'package:moghtarib/features/auth/model/user_model.dart';
 
 abstract class LoginState {}
 

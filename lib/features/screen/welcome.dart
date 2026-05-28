@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-//import 'package:moghtarib/core/widgets/custom_btn.dart';
-import '../../core/utils/app_assets.dart';
+// import 'package:moghtarib/core/widgets/custom_btn.dart';
+// import '../../core/utils/app_assets.dart';
 import '../../core/utils/app_colors.dart';
 
 //import 'package:moghtarib/features/auth/views/register_view.dart';
@@ -17,13 +17,14 @@ class WelcomeScreen extends StatelessWidget {
       backgroundColor: AppColors.scaffoldBackground,
       body: Stack(
         children: [
-          // 1️⃣ صورة الخلفية في الجزء العلوي
+          
           Positioned(
             top: 0,
             left: 0,
             right: 0,
             child: SizedBox(
-              height:814.h,
+              height:514.h,
+              //814 514
               child: Image.asset(
                 'assets/images/Container.png',
                 fit: BoxFit.cover,
@@ -32,7 +33,7 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ),
 
-          // 2️⃣ الحاوية البيضاء السفلية للنصوص والزر
+          
           Positioned(
             bottom: 0,
             left: 0,
@@ -48,7 +49,7 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withValues(alpha:0.05),
                       blurRadius: 10,
                       offset: const Offset(0, -5),
                     ),
@@ -98,7 +99,7 @@ class WelcomeScreen extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/register');
+                          Navigator.pushReplacementNamed(context, '/login');
                         },
                         child: const Text(
                           "Let's Start",

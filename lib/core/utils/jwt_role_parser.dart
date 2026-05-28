@@ -37,8 +37,8 @@ class JwtRoleParser {
   static String _padBase64Url(String input) {
     // base64Url.decode expects proper padding.
     final mod = input.length % 4;
-    if (mod == 2) return '${input}==';
-    if (mod == 3) return '${input}=';
+    if (mod == 2) return '$input==';
+    if (mod == 3) return '$input=';
     if (mod == 0) return input;
     return input;
   }

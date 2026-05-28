@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
-
-import '../cache/cache_helper.dart';
-import '../cache/cache_keys.dart';
-import '../helper/navigator.dart' as app_navigator;
-import '../../features/home/home_screens.dart';
-import '../../features/screen/welcome.dart';
+import'package:moghtarib/core/cache/cache_helper.dart';
+import 'package:moghtarib/core/cache/cache_keys.dart';
+import 'package:moghtarib/core/helper/navigator.dart';
+import 'package:moghtarib/core/helper/navigator.dart' as app_navigator;
+import 'package:moghtarib/features/home/home_screens.dart';
+import 'package:moghtarib/features/screen/welcome.dart';
 
 
 class RoleBasedNavigation {
@@ -49,7 +49,7 @@ class RoleBasedNavigation {
       case 'semsar':
         screen = const SemsarHome();
         break;
-      case 'Student':
+      case 'student':
         screen = const StudentHome();
         break;
       case 'sanaiee':
