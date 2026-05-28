@@ -50,6 +50,8 @@ dependencies:
   flutter_screenutil: 
 
   jwt_decoder: 
+  equatable: ^2.0.8
+  url_launcher:
 
 
 dev_dependencies:
