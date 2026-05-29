@@ -52,6 +52,7 @@ dependencies:
   jwt_decoder: 
   equatable: ^2.0.8
   url_launcher:
+  cached_network_image:
 
 
 dev_dependencies:
