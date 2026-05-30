@@ -2,8 +2,7 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/network/api_helper.dart';
 import '../../../../core/network/end_points.dart';
 import '../model/All_apartment_model.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../../admin/model/sanaiee_model.dart';
+
 class StudentRepo {
   
   // 1️⃣ جلب جميع الشقق المتاحة للطلاب

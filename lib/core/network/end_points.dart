@@ -16,6 +16,7 @@ abstract class EndPoints{
   //static const String getUserApartment='/api/Apartment/GetApartmentForSignInUser';
   static const String searchApartment='/api/Apartment/Search';
   static const String getApartment='/api/Apartment';
+  static const String postApartment='/api/Apartment/add';
   static const String favourite='/api/Favourite';
   // static const String postFavourite='/api/Favourite';
   // static const String deleteFavourite='/api/Favourite';
@@ -23,6 +24,7 @@ abstract class EndPoints{
   // Token refresh endpoint (kept for ApiHelper refresh flow).
   // If your backend uses a different path, update this.
   static const String refresh = '/refresh_token';
+  static const String changePas = '/api/Account/ChangePassword';
 }
 
 

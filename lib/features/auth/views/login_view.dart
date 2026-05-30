@@ -75,6 +75,7 @@ class LoginView extends StatelessWidget {
               backgroundColor: AppColors.scaffoldBackground,
               body: SafeArea(
                 child: SingleChildScrollView(
+                  
                   padding: const EdgeInsets.symmetric(horizontal: 24.0),
                   child: Form(
                     key: cubit.formKey,
@@ -125,32 +126,52 @@ class LoginView extends StatelessWidget {
                         const SizedBox(height: 24),
 
                         SizedBox(
-                          width: 317,
-                          height: 55,
+                          width: double.infinity,
+                          height: 52,
                           child: state is LoginLoadingState
                               ? const Center(
                                   child: CircularProgressIndicator(
                                     color: Color(0xFFF83758),
                                   ),
                                 )
-                              : ElevatedButton(
-                                  onPressed: () => cubit.login(),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColors.primary,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
+                              : Container(width: double.infinity,
+                    height: 52,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF6A11CB), Color(0xFF2575FC)],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF2575FC).withOpacity(0.3),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+
+                                child: ElevatedButton(
+                                    onPressed: () => cubit.login(),
+                                    style: ElevatedButton.styleFrom(
+                                     
+                                      backgroundColor: Colors.transparent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      elevation: 0,
                                     ),
-                                    elevation: 0,
-                                  ),
-                                  child: const Text(
-                                    'Login',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
+                                    child: const Text(
+                                      'Login',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
-                                ),
+                              ),
                         ),
 
                         const SizedBox(height: 18),
