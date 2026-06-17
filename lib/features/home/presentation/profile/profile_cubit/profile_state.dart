@@ -2,7 +2,7 @@ abstract class UserState {}
 
 class UserInitial extends UserState {}
 
-// ==================== Update Profile States ====================
+
 class UpdateProfileLoading extends UserState {}
 
 class UpdateProfileSuccess extends UserState {
@@ -15,7 +15,7 @@ class UpdateProfileError extends UserState {
   UpdateProfileError(this.error);
 }
 
-// ==================== Change Password States ====================
+
 class ChangePasswordLoading extends UserState {}
 
 class ChangePasswordSuccess extends UserState {

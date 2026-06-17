@@ -67,7 +67,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class AdminRepo {
   
-  // 1️⃣ دالة جلب جميع المستخدمين (شغالة وسليمة تماماً)
+  
   Future<Either<String, List<UserModel>>> getAllUsers({String? searchText}) async {
     final hasSearch = searchText != null && searchText.trim().isNotEmpty;
 
@@ -101,9 +101,9 @@ class AdminRepo {
     });
   }
 
-  // 2️⃣ دالة حذف المستخدم (تم تقفيلها وحل مشكلة الـ Syntax والـ Return)
+  
   Future<Either<String, bool>> deleteUser({required String userId}) async {
-    // رجعناها لـ delete الصحيحة مع الـ Id الكابيتال المتوافق مع الـ Swagger
+    
     final result = await ApiHelper.delete(
       endPoint: '${EndPoints.deleteUser}?Id=$userId',
       isProtected: false,
@@ -114,7 +114,7 @@ class AdminRepo {
         final dynamic successRaw = responseBody['success'] ?? responseBody['Success'];
         if (successRaw is bool) return successRaw;
       }
-      return true; // إرجاع افتراضي في حال نجاح الطلب ولم يحتوي الـ Body على كائن معقد
+      return true;
     });
   }
   //sanaiee
@@ -151,8 +151,7 @@ class AdminRepo {
     });
   }
   Future<void> openWhatsApp(String phoneNumber) async {
-    // كود مخصص لتهيئة الرقم بالشكل الذي يقبله الواتساب الدولي (بدون + أو أصفار إضافية في البداية)
-    // إذا كان الرقم مصرياً مثلاً يبدأ بـ 010، يجب أن يصبح 2010
+   
     String formattedPhone = phoneNumber;
     if (phoneNumber.startsWith('0')) {
       formattedPhone = '20${phoneNumber.substring(1)}';
@@ -171,10 +170,10 @@ class AdminRepo {
     }
   }
 
-  // 2️⃣ دالة حذف المستخدم (تم تقفيلها وحل مشكلة الـ Syntax والـ Return)
+ 
   
 
-  // TODO: sanaiee + reports repo methods will be added later
+  
 }
 
   

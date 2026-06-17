@@ -79,7 +79,7 @@ class LoginCubit extends Cubit<LoginState> {
         emit(LoginErrorState(error));
       },
       (userModel) async {
-        // 1. حفظ التوكن في الكاش بالخلفية
+        
         await CacheHelper.setValue(
           key: CacheKeys.accessToken, 
           value: userModel.accessToken, 
@@ -87,7 +87,7 @@ class LoginCubit extends Cubit<LoginState> {
         
         emit(LoginSuccessState(userModel));
 
-        // 2. استخدام التوكن مباشرة من الـ userModel لضمان عدم حدوث نل (Null)
+        
         final token = userModel.accessToken; 
 
         if (token == null || token.isEmpty) {
@@ -95,14 +95,14 @@ class LoginCubit extends Cubit<LoginState> {
           return;
         }
 
-        // 3. استخراج الـ Role من التوكن مباشرة
+        
         final role = JwtRoleParser.extractRole(token);
         if (role == null) {
           emit(LoginErrorState('Invalid token: role not found'));
           return;
         }
 
-        // 4. التوجيه المبني على الـ Role (واللي هيشتغل بعد تعديل 'student' لحروف سمول)
+        
         await RoleBasedNavigation.navigateByRole(
           role: role,
           replace: true,

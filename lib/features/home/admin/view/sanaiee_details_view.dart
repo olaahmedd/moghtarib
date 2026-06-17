@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../model/sanaiee_model.dart'; // تأكدي من صحة المسار للموديل في مشروعك
+import '../model/sanaiee_model.dart'; 
 //import 'package:moghtarib/features/home/admin/model/sanaiee_model.dart';
 import '../cubit/sanaiee_cubit/sanaiee_cubit.dart';
 import '../cubit/sanaiee_cubit/sanaiee_state.dart';
@@ -11,13 +11,13 @@ class SanaieeDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // تحديد الاسم المعروض (دمج الاسم الأول والأخير أو استخدام الـ userName)
+    
     final String rawName = user.userName ?? '${user.firstName ?? ""} ${user.lastName ?? ""}'.trim();
     final String displayName = rawName.isNotEmpty ? rawName : 'User';
 
     return BlocListener<SanaieeCubit, SanaieeState>(
       listener: (context, state) {
-        // الاستماع لحالة الخطأ عند محاولة فتح الواتساب وعرض SnackBar للمستخدم
+    
         if (state is OpenWhatsAppError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -28,14 +28,14 @@ class SanaieeDetailsView extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFF121212), // خلفية داكنة متناسقة مع الكروت
+        backgroundColor: const Color(0xFF121212), 
         appBar: AppBar(
           title: const Text('Sanaiee Details', style: TextStyle(color: Colors.white, fontSize: 18)),
           backgroundColor: const Color(0xFF6A11CB),
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.pop(context), // العودة للخلف
+            onPressed: () => Navigator.pop(context), 
           ),
         ),
         body: SingleChildScrollView(
@@ -64,7 +64,7 @@ class SanaieeDetailsView extends StatelessWidget {
               ],
               const SizedBox(height: 24),
               
-              // حاوية عرض كافة تفاصيل البيانات القادمة من الـ API
+              
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -86,27 +86,27 @@ class SanaieeDetailsView extends StatelessWidget {
                 ),
               ),
               
-              // إضافة مسافة ثم زر الواتساب الأخضر
+              
               if (user.whatsappNumber != null && user.whatsappNumber!.isNotEmpty) ...[
                 const SizedBox(height: 20),
                 BlocBuilder<SanaieeCubit, SanaieeState>(
                   builder: (context, state) {
-                    // إذا كانت الحالة هي التحميل، نعرض مؤشر تحميل داخل الزر
+                  
                     final isLoading = state is OpenWhatsAppLoading;
                     
                     return ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff12B866), // لون واتساب الأخضر
-                        minimumSize: const Size(double.infinity, 52), // الارتفاع والعرض بالكامل
+                        backgroundColor: const Color(0xff12B866), 
+                        minimumSize: const Size(double.infinity, 52), 
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                         elevation: 2,
                       ),
                       onPressed: isLoading 
-                          ? null // تعطيل الزر أثناء التحميل
+                          ? null 
                           : () {
-                              // استدعاء دالة فتح الواتساب من الـ Cubit وتمرير الرقم
+                              
                               context.read<SanaieeCubit>().contactViaWhatsApp(user.whatsappNumber!);
                             },
                       child: isLoading
@@ -118,7 +118,7 @@ class SanaieeDetailsView extends StatelessWidget {
                           : const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.chat, color: Colors.white), // أو أيقونة مخصصة لواتساب
+                                Icon(Icons.chat, color: Colors.white), 
                                 SizedBox(width: 10),
                                 Text(
                                   'Message on WhatsApp',

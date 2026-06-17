@@ -33,7 +33,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
     emit(RegisterChangeRoleState()); 
   }
 
-  // ✨ تم حذف الـ BuildContext تماماً ليكون الكود نظيفاً ومفصولاً عن الـ UI
+ 
   void userRegister({
     required String username,
     required String firstname,
@@ -67,7 +67,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
       (userModel) async {
         print("DEBUG CUBIT REGISTER SUCCESS: ${userModel.toString()}");
 
-        // 1. حفظ التوكن في الكاش
+    
         await CacheHelper.setValue(
           key: CacheKeys.accessToken, 
           value: userModel.accessToken, 
@@ -88,13 +88,11 @@ class RegisterCubit extends Cubit<RegisterStates> {
 
         final normalizedRole = finalRole.toLowerCase();
         
-        // 2. حفظ الـ Role في الكاش ليتعرف عليه الـ Splash لاحقاً
+        
         await CacheHelper.setValue(
           key: CacheKeys.userRole, 
           value: normalizedRole,
         );
-
-        // 3. إرسال حالة النجاح للـ UI، وهناك في الـ Listener هيتم التنقل فوراً بـ BuildContext الصفحة
         emit(RegisterSuccessState(userModel));
       },
     );

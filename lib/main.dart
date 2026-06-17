@@ -25,9 +25,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
   return ScreenUtilInit(
-      designSize: const Size(360, 690), // الأبعاد القياسية الافتراضية للتصميم
+      designSize: const Size(360, 690),
       minTextAdapt: true,
-      splitScreenMode: true, // تفعيل هذا المتغير هو ما يقضي على الشاشة الحمراء تماماً
+      splitScreenMode: true, 
       builder: (context, child) {
      
           return MaterialApp(

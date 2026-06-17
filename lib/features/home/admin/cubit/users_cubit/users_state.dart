@@ -17,7 +17,7 @@ class UsersLoaded extends UsersState {
 
   const UsersLoaded(this.users);
 
-  // ملحوظة: إذا كنت تستخدم مكتبة Equatable، تأكد من عمل extends لـ Equatable فوق، وإلا يمكنك إزالة الـ props لو لم تكن تحتاجها
+  
   @override
   List<Object?> get props => [users];
 }
@@ -28,14 +28,13 @@ class UsersError extends UsersState {
   const UsersError(this.message);
 }
 
-// ✨ تحديث نوع البيانات هنا أيضاً ليتوافق مع الـ Model الجديد
+
 class UserDeleting extends UsersState {
   final List<UserModel> users;
 
   const UserDeleting(this.users);
 }
 
-// ✨ وتحديثه هنا أيضاً
 class UserDeleted extends UsersState {
   final List<UserModel> users;
 

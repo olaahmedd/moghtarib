@@ -60,7 +60,7 @@ class WelcomeScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // العنوان الرئيسي باللون الداكن ليظهر بوضوح
+                     
                       Text(
                         'Mo8tareb — Your Home Away From Home',
                         style: TextStyle(
@@ -73,7 +73,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 16.h),
                       
-                      // النص التوضيحي الفرعي
+                     
                       Text(
                         'Your journey to the perfect student home starts here. Explore verified listings near your university..',
                         style: TextStyle(
@@ -85,17 +85,16 @@ class WelcomeScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                       
-                      const Spacer(), // لدفع الزر إلى الأسفل بشكل متناسق تلقائياً
+                      const Spacer(), 
                       
-                      // 🔥 3️⃣ الـ ElevatedButton الأصيل المصمم من الصفر بداخل الملف
+                     
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary, // اللون الأساسي للتطبيق
-                          foregroundColor: Colors.white,      // لون تأثير الضغط (Splash) ونص الزر الافتراضي
-                          elevation: 0,                       // إلغاء الظل ليكون مسطحاً ومودرن
-                          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14), // مساحة داخلية على حجم الكلمة بالضبط
+                          backgroundColor: AppColors.primary, 
+                          foregroundColor: Colors.white,    
+                          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14), 
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10), // الـ Radius المطلوب (10) ليطابق بقية الحقول
+                            borderRadius: BorderRadius.circular(10), 
                           ),
                         ),
                         onPressed: () {
@@ -104,7 +103,7 @@ class WelcomeScreen extends StatelessWidget {
                         child: const Text(
                           "Let's Start",
                           style: TextStyle(
-                            color: Colors.white, // النص أبيض وثابت
+                            color: Colors.white, 
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),

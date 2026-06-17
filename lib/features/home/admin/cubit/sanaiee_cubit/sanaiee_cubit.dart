@@ -22,16 +22,14 @@ class SanaieeCubit extends Cubit<SanaieeState> {
       await _repo.openWhatsApp(phoneNumber);
       emit(OpenWhatsAppSuccess());
       
-      // 💡 خطوة ذكية: أعد الـ Cubit للحالة المستقرة بعد الفتح مباشرة
-      // حتى إذا عاد المستخدم للخلف يجد الزر طبيعياً وليس معلقاً على التحميل أو النجاح.
-      emit(SanaieeInitial()); // أو الحالة التي تعرض البيانات لديك مثل FetchSanaieeDataSuccess
+      
+      emit(SanaieeInitial()); 
     } catch (e) {
       emit(OpenWhatsAppError(e.toString()));
       
-      // أعده للحالة الأصلية بعد الخطأ أيضاً لكي يتمكن من المحاولة مجدداً
+     
       emit(SanaieeInitial()); 
     }
   }
 }
-// 📢 غيّري int إلى String هنا في البارامتر:
 

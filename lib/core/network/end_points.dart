@@ -16,7 +16,7 @@ abstract class EndPoints{
   //static const String getUserApartment='/api/Apartment/GetApartmentForSignInUser';
   static const String searchApartment='/api/Apartment/Search';
   static const String getApartment='/api/Apartment';
-  static const String postApartment='/api/Apartment/add';
+  static const String postApartment='/api/Apartment';
   static const String favourite='/api/Favourite';
   // static const String postFavourite='/api/Favourite';
   // static const String deleteFavourite='/api/Favourite';

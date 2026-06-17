@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../../../core/utils/app_colors.dart'; // تأكد من مسار الألوان عندك
+import '../../../../../core/utils/app_colors.dart';
 
-// موديل لبيانات أعضاء الفريق
+
 class TeamMember {
   final String name;
   final String role;
@@ -20,7 +20,7 @@ class TeamMember {
 class AboutScreen extends StatelessWidget {
   AboutScreen({super.key});
 
-  // قائمة أعضاء الفريق المحدثة بأرقام التليفونات الصحيحة
+ 
   final List<TeamMember> teamMembers = [
     TeamMember(
       name: 'Gamal Abd El Naser',
@@ -60,25 +60,25 @@ class AboutScreen extends StatelessWidget {
     ),
   ];
 
-  // ✨ دالة مطورة وذكية لفتح محادثة الواتساب وتخطي حماية الأندرويد بنجاح
+  
   Future<void> _launchWhatsApp(String phoneUrl) async {
-    // استخراج الرقم فقط من الرابط الممرر
+    
     final String phoneNumber = phoneUrl.replaceAll('https://wa.me/', '');
 
-    // 1. الرابط المباشر لتطبيق الواتساب (Deep Link) - الأسرع والأضمن للموبايل
+   
     final Uri whatsappAppUri = Uri.parse('whatsapp://send?phone=$phoneNumber');
     
-    // 2. الرابط البديل للويب في حال عدم وجود التطبيق على الجهاز
+    
     final Uri whatsappWebUri = Uri.parse('https://api.whatsapp.com/send?phone=$phoneNumber');
 
     try {
-      // بنجرب نفتح التطبيق مباشرة لتخطي الـ False Block من أندرويد
+      
       final bool launched = await launchUrl(
         whatsappAppUri,
-        mode: LaunchMode.externalNonBrowserApplication, // يجبر الأندرويد يفتح التطبيق نفسه
+        mode: LaunchMode.externalNonBrowserApplication, 
       );
       
-      // لو التطبيق مش مثبت، بنحول فوراً للمتصفح كخطة بديلة
+      
       if (!launched) {
         await launchUrl(
           whatsappWebUri,
@@ -119,7 +119,7 @@ class AboutScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // العنوان الرئيسي للصفحة: Meet Our Team
+             
               const Text(
                 'Meet Our Team',
                 style: TextStyle(
@@ -130,7 +130,7 @@ class AboutScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              // خط تزييني صغير تحت كلمة Meet Our Team بالـ Gradient
+              
               Container(
                 width: 80,
                 height: 4,
@@ -143,7 +143,7 @@ class AboutScreen extends StatelessWidget {
               ),
               const SizedBox(height: 25),
 
-              // الـ Grid View لعرض الكروت (كل اثنين جنب بعض تلقائياً)
+              
               GridView.builder(
                 shrinkWrap: true, 
                 physics: const NeverScrollableScrollPhysics(), 
@@ -176,7 +176,7 @@ class AboutScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // 1. صورة عضو الفريق
+          
           Expanded(
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
@@ -195,7 +195,7 @@ class AboutScreen extends StatelessWidget {
             ),
           ),
           
-          // 2. تفاصيل العضو (الاسم والمسمى الوظيفي)
+          
           Padding(
             padding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 4.0),
             child: Text(
@@ -211,12 +211,12 @@ class AboutScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
 
-          // 3. أزرار التواصل (Say Hello + زرار الواتساب الأخضر اللامع المطور)
+          
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 12.0),
             child: Row(
               children: [
-                // زرار Say Hello
+                
                 Expanded(
                   child: Container(
                     height: 32,
@@ -233,7 +233,7 @@ class AboutScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 6),
-                // زرار الواتساب الدائري المعدل بأيقونة مخصصة بالكامل ✨
+                
                 GestureDetector(
                   onTap: () => _launchWhatsApp(member.whatsappUrl),
                   child: Container(
@@ -258,7 +258,7 @@ class AboutScreen extends StatelessWidget {
   }
 }
 
-// رسمة مخصصة (Custom Painter) لأيقونة الواتساب الأصلية بدقة عالية وبدون مكتبات خارجية ✨
+
 class WhatsAppIconPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

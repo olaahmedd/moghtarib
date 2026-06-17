@@ -142,7 +142,7 @@ abstract class ApiHelper {
     return errors.toString();
   }
 
-  // ✨ تعديل نوع الـ Return ليكون dynamic لجميع الدوال بالأسفل لتقبل الـ List والـ Map معاً
+  
 
   static Future<Either<String, dynamic>> post({
     required String endPoint,
@@ -169,7 +169,7 @@ abstract class ApiHelper {
         ),
       );
 
-      return right(response.data); // ✨ تم إزالة الـ Type Cast الإجباري
+      return right(response.data); 
     } catch (e) {
       return left(_handleDioError(e));
     }
@@ -198,7 +198,7 @@ abstract class ApiHelper {
         ),
       );
 
-      return right(response.data); // ✨ تم إزالة الـ Type Cast الإجباري
+      return right(response.data); 
     } catch (e) {
       return left(_handleDioError(e));
     }
@@ -228,7 +228,7 @@ abstract class ApiHelper {
         ),
       );
 
-      return right(response.data); // ✨ تم إزالة الـ Type Cast الإجباري
+      return right(response.data); 
     } catch (e) {
       return left(_handleDioError(e));
     }
@@ -258,7 +258,7 @@ abstract class ApiHelper {
         ),
       );
 
-      return right(response.data); // ✨ تم إزالة الـ Type Cast الإجباري
+      return right(response.data); 
     } catch (e) {
       return left(_handleDioError(e));
     }

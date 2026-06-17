@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/semantics.dart';
+import 'package:moghtarib/core/cache/cache_helper.dart';
 import 'package:moghtarib/core/network/end_points.dart';
 import '../model/add_apartment_model.dart';
 
-// 
 
 // class ApartmentRepo {
 //   final Dio _dio;
@@ -16,14 +17,14 @@ import '../model/add_apartment_model.dart';
 //     ),
 //   );
 
-//   /// ✅ دالة إضافة شقة جديدة متوافقة مع الـ Swagger (البيانات في الرابط والصور في الـ Body)
+  
 //   Future<Response> addApartment({
 //     required AddApartmentModel apartment,
 //     File? baseImage,
 //     List<File>? additionalImages,
 //   }) async {
 //     try {
-//       // 1. بناء الـ Query Parameters مع التدقيق الشديد في حالة الأحرف (مطابق للـ Swagger)
+      
 //       final Map<String, dynamic> queryParams = {
 //         'City': apartment.city,
 //         'Village': apartment.village,
@@ -31,19 +32,18 @@ import '../model/add_apartment_model.dart';
 //         'Price': apartment.price,
 //         'NumOfRooms': apartment.numOfRooms,
 //         'Type': apartment.type,
-//         'address_Lat': apartment.addressLat, // 👈 حرف L كبير وليس صغير
-//         'address_Lon': apartment.addressLon, // 👈 حرف L كبير وليس صغير
+//         'address_Lat': apartment.addressLat, 
+//         'address_Lon': apartment.addressLon, 
 //         'IsRent': apartment.isRent,
 //       };
 
-//       // 2. بناء الـ FormData للصور فقط في الـ Body
-//       final FormData formData = FormData();
+//             final FormData formData = FormData();
 
-//       // إضافة الصورة الأساسية (Key: BaseImage)
+      
 //       if (baseImage != null) {
 //         formData.files.add(
 //           MapEntry(
-//             'BaseImage', // 👈 حرف B كبير وحرف I كبير مطابق للـ Swagger
+//             'BaseImage', 
 //             await MultipartFile.fromFile(
 //               baseImage.path, 
 //               filename: baseImage.path.split('/').last,
@@ -52,12 +52,12 @@ import '../model/add_apartment_model.dart';
 //         );
 //       }
 
-//       // إضافة الصور الإضافية المتعددة (Key: Images)
+      
 //       if (additionalImages != null && additionalImages.isNotEmpty) {
 //         for (var file in additionalImages) {
 //           formData.files.add(
 //             MapEntry(
-//               'Images', // 👈 حرف I كبير مطابق للـ Swagger
+//               'Images', 
 //               await MultipartFile.fromFile(
 //                 file.path, 
 //                 filename: file.path.split('/').last,
@@ -67,15 +67,15 @@ import '../model/add_apartment_model.dart';
 //         }
 //       }
 
-//       // 🎯 طباعة آمنة للـ URL لتجنب خطأ الـ Subtype 'int' القديم
+      
 //       print("🚀 Requesting Endpoint: ${EndPoints.getApartment}");
 //       print("🚀 Query Params Sent: $queryParams");
 
-//       // 3. إرسال الطلب النهائي للسيرفر
+      
 //       final response = await _dio.post(
-//         EndPoints.getApartment, 
-//         queryParameters: queryParams, // النصوص في الـ URL (Query)
-//         data: formData,               // الصور في الـ Body (Multipart)
+//         EndPoints.postApartment, 
+//         queryParameters: queryParams, 
+//         data: formData,               
 //       );
 
 //       return response;
@@ -86,7 +86,7 @@ import '../model/add_apartment_model.dart';
 //     }
 //   }
 
-//   /// دالة مساعدة لمعالجة أخطاء الـ Dio وتحويلها لنصوص واضحة
+  
 //   String _handleDioError(DioException error) {
 //     switch (error.type) {
 //       case DioExceptionType.connectionTimeout:
@@ -95,8 +95,25 @@ import '../model/add_apartment_model.dart';
 //         return 'انتهت مهلة استقبال البيانات من السيرفر.';
 //       case DioExceptionType.badResponse:
 //         final statusCode = error.response?.statusCode;
-//         final serverMessage = error.response?.data?['message'] ?? error.response?.statusMessage;
-//         return 'خطأ من السيرفر ($statusCode): ${serverMessage ?? "فشل الطلب"}';
+//         String? serverMessage;
+
+        
+//         if (error.response?.data is Map<String, dynamic> || error.response?.data is Map) {
+//           serverMessage = error.response?.data?['message'] ?? error.response?.data?['Message'];
+//         } 
+        
+//         else if (error.response?.data is List) {
+//           final listData = error.response?.data as List;
+//           if (listData.isNotEmpty && listData.first is Map) {
+//             serverMessage = listData.first['message'] ?? listData.first['Message'];
+//           }
+//         }
+
+       
+//         serverMessage ??= error.response?.statusMessage;
+
+//         return 'خطأ من السيرفر ($statusCode): ${serverMessage ?? "فشل الطلب (تأكد من الـ Endpoint)"}';
+        
 //       case DioExceptionType.connectionError:
 //         return 'لا يوجد اتصال بالإنترنت، يرجى التحقق من الشبكة.';
 //       default:
@@ -104,6 +121,9 @@ import '../model/add_apartment_model.dart';
 //     }
 //   }
 // }
+//###################################################################################
+
+
 class ApartmentRepo {
   final Dio _dio;
 
@@ -115,30 +135,28 @@ class ApartmentRepo {
     ),
   );
 
-  /// ✅ دالة إضافة شقة جديدة متوافقة مع الـ Swagger (البيانات في الرابط والصور في الـ Body)
   Future<Response> addApartment({
     required AddApartmentModel apartment,
     File? baseImage,
     List<File>? additionalImages,
   }) async {
     try {
-      // 1. بناء الـ Query Parameters مع التدقيق الشديد في حالة الأحرف (مطابق للـ Swagger)
+      // 1️⃣ حياكة الـ Query Parameters للنصوص والأرقام كما طلبها السيرفر في الـ Swagger
       final Map<String, dynamic> queryParams = {
         'City': apartment.city,
         'Village': apartment.village,
         'Location': apartment.location,
-        'Price': apartment.price,
-        'NumOfRooms': apartment.numOfRooms,
-        'Type': apartment.type,
+        'Price': apartment.price.toInt(),          
+        'NumOfRooms': apartment.numOfRooms,  
+        'Type': apartment.type,              
         'address_Lat': apartment.addressLat, 
         'address_Lon': apartment.addressLon, 
-        'IsRent': apartment.isRent,
+        'IsRent': apartment.isRent,          
       };
 
-      // 2. بناء الـ FormData للصور فقط في الـ Body
+      // 2️⃣ الـ FormData مخصص للصور فقط
       final FormData formData = FormData();
 
-      // إضافة الصورة الأساسية (Key: BaseImage)
       if (baseImage != null) {
         formData.files.add(
           MapEntry(
@@ -151,7 +169,6 @@ class ApartmentRepo {
         );
       }
 
-      // إضافة الصور الإضافية المتعددة (Key: Images)
       if (additionalImages != null && additionalImages.isNotEmpty) {
         for (var file in additionalImages) {
           formData.files.add(
@@ -166,26 +183,37 @@ class ApartmentRepo {
         }
       }
 
-      // 🎯 طباعة آمنة للـ URL المكتمل لتسهيل تتبع أي تغيير مع الباك-إند
-      print("🚀 Requesting Endpoint: ${EndPoints.getApartment}");
-      print("🚀 Query Params Sent: $queryParams");
+      // 3️⃣ جلب التوكن بشكل آمن تماماً وتفادي خطأ الـ Object Casting
+      final dynamic rawToken = CacheHelper.getValue('token');
+      final String token = rawToken != null ? rawToken.toString() : '';
 
-      // 3. إرسال الطلب النهائي للسيرفر
+      print("🚀 SENDING TO: ${EndPoints.baseUrl}${EndPoints.postApartment}");
+      print("🚀 AUTH TOKEN LENGTH: ${token.length}");
+
+      // 4️⃣ إرسال الطلب النهائي المدمج بالسيرفر أونلاين
       final response = await _dio.post(
-        EndPoints.postApartment, // 👈 إذا أكد لك الباك إند مساراً مختلفاً لـ POST، قم بتغيير السهم هنا فقط
-        queryParameters: queryParams, 
-        data: formData,               
+        EndPoints.postApartment, 
+        queryParameters: queryParams, // الحقول النصية في الـ URL
+        data: formData,               // الصور في الـ Body
+        options: Options(
+          contentType: 'multipart/form-data',
+          headers: {
+            if (token.isNotEmpty) 'Authorization': 'Bearer $token',
+            'Accept': 'application/json',
+          },
+        ),
       );
 
       return response;
     } on DioException catch (e) {
+      print("🚨 FULL SERVER ERROR: ${e.response?.data}");
+      print("🚨 STATUS CODE: ${e.response?.statusCode}");
       throw _handleDioError(e);
     } catch (e) {
       throw Exception('حدث خطأ غير متوقع: $e');
     }
   }
 
-  /// 🛠️ دالة مساعدة محصنة ومعالجة لأخطاء الـ Dio لمنع الانهيار وخطأ الـ Index الشهير
   String _handleDioError(DioException error) {
     switch (error.type) {
       case DioExceptionType.connectionTimeout:
@@ -196,11 +224,9 @@ class ApartmentRepo {
         final statusCode = error.response?.statusCode;
         String? serverMessage;
 
-        // الحماية الذهبية: نتحقق أولاً هل الـ data عبارة عن Map قبل فحص الـ Keys
         if (error.response?.data is Map<String, dynamic> || error.response?.data is Map) {
           serverMessage = error.response?.data?['message'] ?? error.response?.data?['Message'];
         } 
-        // إذا أرجع السيرفر قائمة أخطاء بدلاً من Map
         else if (error.response?.data is List) {
           final listData = error.response?.data as List;
           if (listData.isNotEmpty && listData.first is Map) {
@@ -208,10 +234,9 @@ class ApartmentRepo {
           }
         }
 
-        // إذا لم نجد أي رسالة مخصصة، نأخذ الـ statusMessage الافتراضي
         serverMessage ??= error.response?.statusMessage;
 
-        return 'خطأ من السيرفر ($statusCode): ${serverMessage ?? "فشل الطلب (تأكد من الـ Endpoint)"}';
+        return 'خطأ من السيرفر ($statusCode): ${serverMessage ?? "فشل الطلب (تأكد من الـ Endpoint أو الـ Authorization)"}';
         
       case DioExceptionType.connectionError:
         return 'لا يوجد اتصال بالإنترنت، يرجى التحقق من الشبكة.';

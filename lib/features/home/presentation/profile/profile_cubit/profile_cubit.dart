@@ -10,13 +10,13 @@ class UserCubit extends Cubit<UserState> {
 
   static UserCubit get(context) => BlocProvider.of(context);
 
-  // تعريف الـ Controllers الثلاثة المطلوبة في الـ UI
+  
   var emailController = TextEditingController();
   var newPasswordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
 
   void changePassword() async {
-    // 1. التحقق من المدخلات
+    
     if (emailController.text.isEmpty) {
       emit(ChangePasswordError("برجاء إدخال البريد الإلكتروني"));
       return;
@@ -34,9 +34,9 @@ class UserCubit extends Cubit<UserState> {
 
     emit(ChangePasswordLoading());
     
-    // 2. استدعاء الـ Repo وتمرير الإيميل والباسورد
+    
     final result = await userRepo.changePassword(
-      email: emailController.text, // الخطأ هنا هيختفي لأن الـ Repo بقا بيستقبله
+      email: emailController.text, 
       newPassword: newPasswordController.text,
     );
     

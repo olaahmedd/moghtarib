@@ -12,13 +12,13 @@ class SemsarHomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // إنشاء نسخة واحدة من الـ Repo
+    
     final semsarRepo = ApartmentRepo();
 
     return BlocProvider<ApartmentCubit>(
       create: (_) => ApartmentCubit(semsarRepo),
       child: DefaultTabController(
-        length: 1, // تم تعديلها إلى 1 حالياً بناءً على التابات المتاحة عندك
+        length: 1,
         child: BaseHomeScreen(
           drawerTitle: 'Semsar',
           onLogout: null,
@@ -31,14 +31,14 @@ class SemsarHomeView extends StatelessWidget {
                   unselectedLabelColor: Colors.white70,
                   indicatorColor: Color(0xFF6F32E4),
                   tabs: [
-                    Tab(text: 'Add Apartment'), // التاب الحالي الخاص بك
+                    Tab(text: 'Add Apartment'), 
                   ],
                 ),
               ),
               const Expanded(
                 child: TabBarView(
                   children: [
-                    AddApartmentTabView(), // استدعاء الـ View الفعلي هنا ليقرأ الـ Cubit بسلام
+                    AddApartmentTabView(), 
                   ],
                 ),
               ),

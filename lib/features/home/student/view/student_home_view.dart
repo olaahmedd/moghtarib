@@ -16,7 +16,7 @@ class StudentHomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // إنشاء نسخة واحدة من الـ AdminRepo ليتشاركها الـ Cubits بدلاً من إنشاء نسختين منفصلتين
+    
     final studentRepo = StudentRepo();
      final AdminRepo() = AdminRepo();
 
@@ -24,18 +24,15 @@ class StudentHomeView extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AllApartmentCubit>(
-          // هنا نقوم بحقن الـ SanaieeCubit واستدعاء fetchSanaiee() مباشرة لتبدأ البيانات بالتحميل فوراً
+          
           create: (_) => AllApartmentCubit(studentRepo)..fetchAllApartment, 
          ),
         BlocProvider<SanaieeCubit>(
-          // هنا نقوم بحقن الـ SanaieeCubit واستدعاء fetchSanaiee() مباشرة لتبدأ البيانات بالتحميل فوراً
+         
           create: (_) => SanaieeCubit(AdminRepo())..fetchSanaiee(), 
         ),
 
-        //  BlocProvider<FavouriteCubit>(
-        //   // هنا نقوم بحقن الـ SanaieeCubit واستدعاء fetchSanaiee() مباشرة لتبدأ البيانات بالتحميل فوراً
-        //   create: (_) => FavouriteCubit(studentRepo)..fetchApartment, 
-        //  ),
+        
       ],
       child: DefaultTabController(
         length: 2,
@@ -63,7 +60,7 @@ class StudentHomeView extends StatelessWidget {
                 child: TabBarView(
                   children: [
                   ApartmentTabView(),
-                    SanaieeTabView(), // 💡 الآن ستجد الـ Cubit الخاص بها وتعمل بسلام دون شاشة حمراء
+                    SanaieeTabView(), 
                   //FavouriteTabView(),
                   ],
                 ),

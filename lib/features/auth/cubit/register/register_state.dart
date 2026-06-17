@@ -10,7 +10,7 @@ class RegisterLoadingState extends RegisterStates {}
 class RegisterSuccessState extends RegisterStates {
   final UserModel userModel;
 
-  RegisterSuccessState(this.userModel); // 💡 الـ Constructor هنا أصبح يستقبل المتغير بنجاح
+  RegisterSuccessState(this.userModel); 
 }
 class RegisterChangeRoleState extends RegisterStates {}
 

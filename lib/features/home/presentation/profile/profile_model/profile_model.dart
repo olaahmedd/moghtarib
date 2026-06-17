@@ -7,7 +7,7 @@ class ChangePasswordResponse {
     required this.message,
   });
 
-  // بنحتاجها عشان نستقبل البيانات من السيرفر ونحولها لـ Object نشتغل بيه
+  
   factory ChangePasswordResponse.fromJson(Map<String, dynamic> json) {
     return ChangePasswordResponse(
       statusCode: json['statusCode'] as int?,

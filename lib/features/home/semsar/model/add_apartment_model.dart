@@ -21,13 +21,13 @@ class AddApartmentModel {
     required this.isRent,
   });
 
-  // 👇 أضف هذا الجزء لحل المشكلة واختفاء الخطأ
+  
   factory AddApartmentModel.fromJson(Map<String, dynamic> json) {
     return AddApartmentModel(
       city: json['City'] ?? '',
       village: json['Village'] ?? '',
       location: json['Location'] ?? '',
-      // تحويل آمن للـ double لتجنب أي مشاكل إذا أرسل السيرفر رقم صحيح
+      
       price: (json['Price'] as num?)?.toDouble() ?? 0.0,
       numOfRooms: json['NumOfRooms'] ?? 0,
       type: json['Type'] ?? 0,
@@ -37,7 +37,7 @@ class AddApartmentModel {
     );
   }
 
-  // تحويل البيانات لـ Map عشان تتبعت كـ Query Parameters بسهولة
+ 
   Map<String, dynamic> toQueryParameters() {
     return {
       'City': city,

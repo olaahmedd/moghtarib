@@ -71,7 +71,7 @@ import 'package:moghtarib/features/auth/model/user_model.dart';
 class AuthRepo {
   
   Future<String?> fetchUserRole() async {
-    // Reads access token from cache and calls UserRoles endpoint.
+    
     final token = CacheHelper.getValue(CacheKeys.accessToken) as String?;
     if (token == null || token.isEmpty) return null;
 
@@ -83,7 +83,7 @@ class AuthRepo {
     return response.fold(
       (error) => null,
       (map) {
-        // Backend can return either a string or a model.
+        
         final dynamic role = map['role'] ?? map['Role'] ?? map['userRole'] ?? map['UserRole'];
         if (role == null) {
           // Sometimes backend returns a list
@@ -98,7 +98,7 @@ class AuthRepo {
     );
   }
 
-  // ==================== LOGIN FUNCTION ====================
+  
 
   Future<Either<String, UserModel>> login({
 
@@ -120,7 +120,7 @@ class AuthRepo {
       (map) async {
         print("DEBUG LOGIN SUCCESS MAP: $map");
         
-        // حفظ التوكنز بأمان في الكاش
+        
         if (map[CacheKeys.accessToken] != null) {
           await CacheHelper.setValue(key: CacheKeys.accessToken, value: map[CacheKeys.accessToken]);
         }
@@ -128,14 +128,13 @@ class AuthRepo {
           await CacheHelper.setValue(key: CacheKeys.refreshToken, value: map[CacheKeys.refreshToken]);
         }
 
-        // إرجاع الموديل
+        
         return right(UserModel.fromJson(map['user'] ?? map)); 
       },
     );
   }
 
-  // ==================== REGISTER FUNCTION ====================
-  // تم تغيير النوع المرتجع إلى UserModel ليدخل التطبيق فوراً بعد التسجيل
+  
   Future<Either<String, UserModel>> register({
     required String username,
     required String firstName,
@@ -172,7 +171,7 @@ class AuthRepo {
       (map) async {
         print("DEBUG REGISTER SUCCESS MAP: $map");
         
-        // 🔥 خطوة ذكية: بما أن السيرفر أعاد التوكنز عند النجاح، نقوم بحفظها فوراً هنا
+        
         if (map[CacheKeys.accessToken] != null || map['token'] != null) {
           await CacheHelper.setValue(
             key: CacheKeys.accessToken, 
@@ -186,8 +185,7 @@ class AuthRepo {
           );
         }
 
-        // نقوم بعمل Parse للبيانات المرجعة كـ UserModel
-        // إذا كان السيرفر يرسل بيانات المستخدم بداخل كائن 'user' نأخذه، وإذا كان يرسلها في الـ Map المباشر نمرر الـ map نفسه
+    
         final userData = map['user'] != null ? map['user'] : map;
         return right(UserModel.fromJson(userData));
       },

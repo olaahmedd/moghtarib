@@ -19,17 +19,16 @@ class LoginView extends StatelessWidget {
       child: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state is LoginSuccessState) {
-            // 1. هنجيب الـ role اللي راجعة من الـ state بعد نجاح اللوج ان
-            // (تأكدي من اسم المتغير جوه الـ LoginSuccessState عندك، لو اسمه userModel.type مثلاً عدليه)
+            
             final token = state.userModel.accessToken;
             final userRole = JwtRoleParser.extractRole(token ?? '');
 
-            // 2. فحص الـ Role وتوجيه المستخدم للصفحة الصح إجبارياً
+            
             if (userRole == 'Admin') {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  // هنا بناديه على صفحة الـ AdminHomeScreen اللي لسه مصلحين الـ import بتاعها
+                  
                   builder: (_) => const AdminHomeView(), 
                 ),
               );
@@ -44,7 +43,7 @@ class LoginView extends StatelessWidget {
                 MaterialPageRoute(builder: (_) => const SemsarHome()),
               );
             } else {
-              // صفحة احتياطية لو الرول مش مطابقة
+              
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

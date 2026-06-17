@@ -5,7 +5,7 @@ import '../model/All_apartment_model.dart';
 
 class StudentRepo {
   
-  // 1️⃣ جلب جميع الشقق المتاحة للطلاب
+  
   Future<Either<String, List<AllApartmentModel>>> getAllApartments({String? searchText}) async {
     final hasSearch = searchText != null && searchText.trim().isNotEmpty;
 
@@ -16,12 +16,12 @@ class StudentRepo {
     );
 
     return result.map((responseBody) {
-      // إذا كان الرد عبارة عن List مباشرة
+      
       if (responseBody is List) {
         return responseBody.map((e) => AllApartmentModel.fromJson(Map<String, dynamic>.from(e))).toList();
       }
       
-      // إذا كان الرد Map ويحتوي على الكائنات بداخل كباري معينة
+      
       if (responseBody is Map) {
         final dynamic data = responseBody['data'] ?? responseBody['result'] ?? responseBody['apartments'] ?? responseBody;
         

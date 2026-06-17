@@ -24,12 +24,12 @@ class UserModel {
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    // قراءة الـ id كـ String مباشرة وبأمان
+   
     final dynamic idRaw = json['id'] ?? json['Id'] ?? json['userId'];
     final String parsedId = idRaw?.toString() ?? '';
 
     return UserModel(
-      id: parsedId, // ✨ سيأخذ الـ UUID النصي الصحيح الآن
+      id: parsedId, 
       userName: json['userName']?.toString(),
       email: json['email']?.toString(),
       firstName: json['firstName']?.toString(),

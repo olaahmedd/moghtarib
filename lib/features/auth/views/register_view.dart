@@ -12,8 +12,7 @@ import 'package:moghtarib/core/routes/app_routes.dart';
 
 
 
-// فرضاً أن هذا هو الـ Custom TextField اللي مستخدماه للـ National ID
-// لو ملوش ملف منفصل سيبيه زي ما هو
+
 class DefaultTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
@@ -62,7 +61,7 @@ class RegisterView extends StatelessWidget {
               ),
             );
 
-            // 2. التوجيه الآمن بناءً على الـ Role المختار من الـ Cubit ومسح الـ Stack
+            
             final cubit = RegisterCubit.get(context);
             final normalizedRole = (cubit.selectedRole ?? '').toLowerCase();
 
@@ -84,7 +83,7 @@ class RegisterView extends StatelessWidget {
                 nextRoute = AppRoutes.welcome;
             }
 
-            // التوجيه الفوري ومسح شاشات الـ Register والـ Login السابقة تماماً
+            
             Navigator.pushNamedAndRemoveUntil(context, nextRoute, (route) => false);
           }
           
@@ -248,7 +247,7 @@ class RegisterView extends StatelessWidget {
                       const SizedBox(height: 16),
                   
                       SizedBox(
-                        width: double.infinity, // تمديد العرض ليكون متناسقاً وملء المساحة المتاحة
+                        width: double.infinity, 
                         height: 55,
                         child: state is RegisterLoadingState
                             ? const Center(child: CircularProgressIndicator(color: Color(0xFFF83758)))

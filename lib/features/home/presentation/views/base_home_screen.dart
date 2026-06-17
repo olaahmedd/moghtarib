@@ -108,7 +108,7 @@ class BaseHomeScreen extends StatelessWidget {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => BlocProvider(
-                  create: (context) => UserCubit(UserRepo()), // تأكد من باصي الـ apiHelper لو الـ Constructor مستنيه
+                  create: (context) => UserCubit(UserRepo()), 
                  child: const ProfileScreen(),
                   ),)
                    );
@@ -133,23 +133,22 @@ class BaseHomeScreen extends StatelessWidget {
     style: TextStyle(color: Colors.white),
   ),
   onTap: () async {
-    // 1. غلق القائمة الجانبية (Drawer)
+    
     Navigator.of(context).pop();
 
-    // 2. مسح بيانات الجلسة من الكاش (عشان لما يفتح تاني يروح للـ Splash ومنها للـ Welcome)
-    // ملحوظة: تأكدي من عمل import لـ CacheHelper و CacheKeys في الملف ده لو مش معمولين.
-    await CacheHelper.setValue(key: CacheKeys.accessToken, value: null); // أو قيمة فارغة ''
+    
+    await CacheHelper.setValue(key: CacheKeys.accessToken, value: null); 
     await CacheHelper.setValue(key: CacheKeys.userRole, value: null);
 
-    // 3. تشغيل الـ callback الإضافي لو مبعوت من بره
+   
     onLogout?.call();
 
-    // 4. توجيهه لصفحة الـ Welcome ومسح كل الصفحات القديمة من الـ Stack
+    
     if (context.mounted) {
       Navigator.pushNamedAndRemoveUntil(
         context,
-        AppRoutes.welcome, // اسم الراوت الخاص بصفحة let's start / welcome عندك
-        (route) => false,  // مسح كل الصفحات السابقة تماماً
+        AppRoutes.welcome,
+        (route) => false, 
       );
     }
   },

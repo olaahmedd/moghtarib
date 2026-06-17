@@ -1,5 +1,5 @@
 class SanaieeModel {
-  final String id; // ✨ تم التغيير إلى String لأن السيرفر يرسله UUID
+  final String id; 
   final String? userName;
   final String? email;
   final String? firstName;
@@ -28,12 +28,12 @@ class SanaieeModel {
   });
 
   factory SanaieeModel.fromJson(Map<String, dynamic> json) {
-    // قراءة الـ id كـ String مباشرة وبأمان
+    
     final dynamic idRaw = json['id'] ?? json['Id'] ?? json['userId'];
     final String parsedId = idRaw?.toString() ?? '';
 
     return SanaieeModel(
-      id: parsedId, // ✨ سيأخذ الـ UUID النصي الصحيح الآن
+      id: parsedId, 
       userName: json['userName']?.toString(),
       email: json['email']?.toString(),
       firstName: json['firstName']?.toString(),

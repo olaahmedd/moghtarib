@@ -14,13 +14,13 @@ class ChangePasswordRequestBody {
   Map<String, dynamic> toJson() {
     return {
       'email': email,
-      'password': password, // السيرفر مستني كلمة 'password' مش 'newPassword' بناءً على الـ Swagger
+      'password': password, 
     };
   }
 }
 
 class UserRepo {
-  // ==================== تغيير كلمة المرور ====================
+  
   Future<Either<String, String>> changePassword({
     required String email, 
     required String newPassword,
@@ -31,17 +31,17 @@ class UserRepo {
         password: newPassword,
       );
 
-      // استدعاء الـ ApiHelper وتمرير الـ body
+      
       final result = await ApiHelper.put(
         endPoint: EndPoints.changePas, 
         data: requestBody.toJson(),
-        isProtected: true, // عشان يضيف الـ Bearer Token لو الـ Endpoint محمي
+        isProtected: true, 
       );
 
       return result.fold(
         (error) => Left(error),
         (data) {
-          // السيرفر بيرجع الـ Response مباشرة، بنفحص الرسالة
+          
           if (data is Map && data['message'] != null) {
             return Right(data['message'].toString());
           }

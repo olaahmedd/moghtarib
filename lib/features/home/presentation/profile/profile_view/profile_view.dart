@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../profile_cubit/profile_state.dart';
-// تأكد من استيراد الـ Cubit الصحيح، قمنا هنا باستيراد الـ UserCubit المتوافق مع الـ BlocConsumer بالأسفل
 import 'package:moghtarib/features/home/presentation/profile/profile_cubit/profile_cubit.dart'; 
 
 class ProfileScreen extends StatelessWidget {
@@ -49,16 +48,16 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 25),
 
-                // 1. خانة البريد الإلكتروني (Email) المضافة حديثاً
+               
                 _buildCustomTextField(
-                  controller: cubit.emailController, // تأكد من إضافة هذا الـ Controller في الـ UserCubit
+                  controller: cubit.emailController, 
                   hintText: 'Email Address',
                   icon: Icons.email_outlined,
                   isPassword: false,
                 ),
                 const SizedBox(height: 15),
 
-                // 2. حقل كلمة المرور الجديدة
+                
                 _buildCustomTextField(
                   controller: cubit.newPasswordController,
                   hintText: 'New Password',
@@ -67,7 +66,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 15),
 
-                // 3. حقل تأكيد كلمة المرور
+                
                 _buildCustomTextField(
                   controller: cubit.confirmPasswordController,
                   hintText: 'Confirm New Password',
@@ -76,7 +75,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 35),
 
-                // 4. زرار التحديث الجديد بالـ Gradient البنفسجي والأزرق
+                
                 GestureDetector(
                   onTap: state is ChangePasswordLoading
                       ? null
@@ -124,7 +123,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // الـ Widget المخصص للـ Text Field باللون الرمادي المتناسق
+  
   Widget _buildCustomTextField({
     required TextEditingController controller,
     required String hintText,
