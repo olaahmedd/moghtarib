@@ -53,6 +53,7 @@ dependencies:
   equatable: ^2.0.8
   url_launcher:
   cached_network_image:
+  path_provider: ^2.1.6
 
 
 

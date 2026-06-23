@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moghtarib/features/home/presentation/profile/profile_repo/profile_repo.dart';
-import '../profile_cubit/profile_state.dart';
+import 'package:moghtarib/features/home/presentation/settings/change_password_repo/change_password_repo.dart';
+import 'change_password_state.dart';
 
 
 class UserCubit extends Cubit<UserState> {
