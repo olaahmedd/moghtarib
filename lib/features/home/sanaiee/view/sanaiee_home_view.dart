@@ -1,42 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moghtarib/features/home/admin/cubit/sanaiee_cubit/sanaiee_cubit.dart';
-import 'package:moghtarib/core/utils/app_colors.dart';
-import'package:moghtarib/features/home/presentation/views/base_home_screen.dart';
-import 'package:moghtarib/features/home/admin/repo/admin_repo.dart';
- import 'package:moghtarib/features/home/admin/view/sanaiee_tab_view.dart';
-import 'package:moghtarib/features/home/student/cubit/all_apartment/all_apartment_cubit.dart';
-import 'package:moghtarib/features/home/student/cubit/my_report_cubit/my_report_cubit.dart';
- import'package:moghtarib/features/home/student/repo/student_repo.dart';
-import 'package:moghtarib/features/home/student/view/add_report_tab_view.dart';
- import'package:moghtarib/features/home/student/view/all_apartment_tab_view.dart';
-import 'package:moghtarib/features/home/student/view/my_report_tab_view.dart';
-class StudentHomeView extends StatelessWidget {
-  const StudentHomeView({super.key});
+import 'package:moghtarib/features/home/sanaiee/view/add_department_tap_view.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../presentation/views/base_home_screen.dart';
+import '../../admin/repo/admin_repo.dart';
+import '../../student/repo/student_repo.dart';
+import '../../student/cubit/my_report_cubit/my_report_cubit.dart';
+import '../../student/view/add_report_tab_view.dart';
+import '../../student/view/my_report_tab_view.dart';
+import '../cubit/department_cubit/department_cubit.dart';
+import '../repo/sanaiee_repo.dart';
+class SanaieeHomeView extends StatelessWidget {
+  const SanaieeHomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
     final studentRepo = StudentRepo();
     final adminRepo = AdminRepo();
-    
+    final sanaieeRepo =SanaieeRepo();
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AllApartmentCubit>(
-          create: (_) => AllApartmentCubit(studentRepo)..fetchAllApartment(),
-        ),
-        BlocProvider<SanaieeCubit>(
-          create: (_) => SanaieeCubit(adminRepo)..fetchSanaiee(),
-        ),
-        
+        BlocProvider(
+      create: (context) => DepartmentCubit(sanaieeRepo), 
+    ),
+       
        BlocProvider(
         create: (context) => MyReportsCubit(studentRepo)..fetchMyReports(),
-         child: const MyReportTabView(),
+      
         )
       ],
       child: DefaultTabController(
-        length: 4, 
+        length: 3, 
         child: BaseHomeScreen(
-          drawerTitle: 'Student',
+          drawerTitle: 'Sanaiee',
           onLogout: null,
           body: Column(
             children: [
@@ -58,8 +54,8 @@ class StudentHomeView extends StatelessWidget {
                     fontSize: 16,
                   ),
                   tabs: const [
-                    Tab(text: 'Apartment'),
-                    Tab(text: 'Sanaiee'),
+                  
+                    Tab(text: 'Add Department'),
                     Tab(text: 'Add Report'),
                     Tab(text: 'My Report'),
                   ],
@@ -68,8 +64,8 @@ class StudentHomeView extends StatelessWidget {
               const Expanded(
                 child: TabBarView(
                   children: [
-                    ApartmentTabView(),
-                    SanaieeTabView(),
+                  
+                    AddDepartmentTabView(),
                     AddReportTabView(),
                     MyReportTabView(),
                   ],

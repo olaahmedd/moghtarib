@@ -49,7 +49,7 @@ dependencies:
   connectivity_plus: 
   flutter_screenutil: 
 
-  jwt_decoder: 
+  jwt_decoder: ^2.0.1 
   equatable: ^2.0.8
   url_launcher:
   cached_network_image:

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moghtarib/features/home/sanaiee/view/sanaiee_home_view.dart';
 import 'package:moghtarib/features/home/semsar/view/semsar_home_view.dart';
+import 'package:moghtarib/features/home/student/cubit/add_report_cubit/add_report_cubit.dart';
+import 'package:moghtarib/features/home/student/repo/student_repo.dart';
 import 'package:moghtarib/features/home/student/view/student_home_view.dart';
-//import '../../core/utils/app_assets.dart';
-//import '../../core/utils/app_colors.dart';
-import 'presentation/views/base_home_screen.dart';
 import 'admin/view/admin_home_view.dart';
-
 class AdminHome extends StatelessWidget {
   const AdminHome({super.key});
 
@@ -20,11 +20,11 @@ class StudentHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return const BaseHomeScreen(
-    //   drawerTitle: 'Student',
-    //   body: _PlaceholderBody(title: 'Student Home'),
-    // );
-    return const StudentHomeView();
+   
+    return BlocProvider(
+    create: (context) => AddReportCubit(StudentRepo()), 
+    child: const StudentHomeView(), 
+  );
   }
 }
 
@@ -33,11 +33,8 @@ class SemsarHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return const BaseHomeScreen(
-    //   drawerTitle: 'Semsar',
-    //   body: _PlaceholderBody(title: 'Semsar Home'),
-    // );
-    return const SemsarHomeView();
+
+     return const SemsarHomeView();
   }
 }
 
@@ -46,10 +43,12 @@ class SanaieeHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const BaseHomeScreen(
-      drawerTitle: 'Sanaiee',
-      body: _PlaceholderBody(title: 'Sanaiee Home'),
-    );
+   
+       return BlocProvider(
+    create: (context) => AddReportCubit(StudentRepo()), 
+    child: const  SanaieeHomeView(), 
+  );
+    
   }
 }
 

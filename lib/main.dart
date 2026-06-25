@@ -7,11 +7,6 @@ import 'package:moghtarib/features/screen/splash.dart';
 import 'package:moghtarib/features/screen/welcome.dart';
 import 'package:moghtarib/features/home/home_screens.dart';
 import 'package:moghtarib/core/routes/app_routes.dart';
-
-
-
-
-
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await CacheHelper.init();
@@ -21,7 +16,6 @@ void main() async{
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
   return ScreenUtilInit(

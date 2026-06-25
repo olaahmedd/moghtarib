@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../../core/utils/app_colors.dart';
-
-
 class TeamMember {
   final String name;
   final String role;
@@ -16,11 +14,8 @@ class TeamMember {
     required this.whatsappUrl,
   });
 }
-
 class AboutScreen extends StatelessWidget {
   AboutScreen({super.key});
-
- 
   final List<TeamMember> teamMembers = [
     TeamMember(
       name: 'Gamal Abd El Naser',
@@ -54,13 +49,11 @@ class AboutScreen extends StatelessWidget {
     ),
     TeamMember(
       name: 'Abdulrhman Reda',
-      role: 'Backend Developer',
+      role: 'Flutter Developer',
       imagePath: 'assets/images/abdo.jpeg',
       whatsappUrl: 'https://wa.me/201066723755',
     ),
   ];
-
-  
   Future<void> _launchWhatsApp(String phoneUrl) async {
     
     final String phoneNumber = phoneUrl.replaceAll('https://wa.me/', '');
@@ -77,8 +70,6 @@ class AboutScreen extends StatelessWidget {
         whatsappAppUri,
         mode: LaunchMode.externalNonBrowserApplication, 
       );
-      
-      
       if (!launched) {
         await launchUrl(
           whatsappWebUri,

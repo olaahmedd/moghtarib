@@ -4,15 +4,12 @@ import 'package:moghtarib/features/home/presentation/settings/change_password_re
 import '../../../../../core/utils/app_colors.dart';
 import '../change_password_cubit/change_password_state.dart';
 import 'package:moghtarib/features/home/presentation/settings/change_password_cubit/change_password_cubit.dart'; 
-
-
-
 class ChangePasswordScreen extends StatelessWidget {
   const ChangePasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // التعديل السحري هنا: بنوفر الـ Cubit للشاشة تلقائياً أول ما تفتح مهما كان مكانها
+  
     return BlocProvider(
       create: (context) => UserCubit(UserRepo()),
       child: Scaffold(
