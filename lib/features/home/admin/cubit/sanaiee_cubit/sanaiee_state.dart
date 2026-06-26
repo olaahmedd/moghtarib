@@ -1,5 +1,5 @@
 import 'package:moghtarib/features/home/admin/model/sanaiee_model.dart';
-import 'package:equatable/equatable.dart';
+
 
 abstract class SanaieeState {
   const SanaieeState();

@@ -1,9 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moghtarib/core/utils/app_colors.dart';
-//import 'package:moghtarib/core/widgets/default_text_field.dart';
-
 import 'package:moghtarib/features/auth/cubit/register/register_cubit.dart';
 import 'package:moghtarib/features/auth/cubit/register/register_state.dart';
 
@@ -26,14 +23,11 @@ class _RegisterViewState extends State<RegisterView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
-
-  // 🎯 المتغير اللي بيشيل الـ id بتاع المهنة المختارة من السيرفر
   String? _selectedDepartmentId;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      // 🎯 بنادي على دالة جلب الأقسام فوراً مع إنشاء الـ Cubit عشان البيانات تجهز والشاشة بتفتح
       create: (BuildContext context) => RegisterCubit()..getDepartmentsData(),
       child: BlocConsumer<RegisterCubit, RegisterStates>(
         listener: (context, state) {
@@ -164,7 +158,7 @@ class _RegisterViewState extends State<RegisterView> {
                       ),
                       const SizedBox(height: 16),
                       
-                      // 1️⃣ قائمة اختيار نوع الحساب الـ Role
+                      
                       DropdownButtonFormField<String>(
                         value: cubit.selectedRole,
                         hint: const Text('Select role', style: TextStyle(color: Colors.grey)),
@@ -197,8 +191,6 @@ class _RegisterViewState extends State<RegisterView> {
                           return null;
                         },
                       ),
-                      
-                      // 🎯 2️⃣ قائمة المهن الديناميكية: تظهر فقط عند اختيار 'Sanaiee' وتقرأ من السيرفر مباشر
                       if (cubit.selectedRole == 'Sanaiee') ...[
                         const SizedBox(height: 16),
                         state is RegisterGetDepartmentsLoadingState
@@ -215,10 +207,10 @@ class _RegisterViewState extends State<RegisterView> {
                                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                                 ),
                                 icon: const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
-                                // 🎯 اللستة هنا بتقرأ من البيانات الجاية من الـ API مباشرة
+                               
                                 items: cubit.departments.map((dept) {
                                   return DropdownMenuItem<String>(
-                                    value: dept['id'].toString(), // تحويل الـ Id لـ String عشان الـ Dropdown
+                                    value: dept['id'].toString(), 
                                     child: Text(dept['name'] ?? '', style: const TextStyle(color: Colors.black)),
                                   );
                                 }).toList(),
@@ -294,7 +286,7 @@ class _RegisterViewState extends State<RegisterView> {
                                   ],
                                 ),
                                 child: ElevatedButton(
-                                // 🎯 التعديل جوه زرار الـ ElevatedButton في شاشة الـ Register
+                               
 onPressed: () {
   if (_formKey.currentState!.validate()) {
     cubit.userRegister(
@@ -307,7 +299,7 @@ onPressed: () {
       password: _passwordController.text,
       email: _emailController.text,
       whatsappnumber: _whatsappController.text,
-      // 🎯 تعديل الحماية هنا: لو مش صنايعي يبعت null فوراً للسيرفر
+      
       departmentId: cubit.selectedRole == 'Sanaiee' ? _selectedDepartmentId : null, 
     );
   }

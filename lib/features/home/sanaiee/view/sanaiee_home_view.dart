@@ -119,7 +119,7 @@ class SanaieeHomeView extends StatelessWidget {
                       isScrollable: true,
                       tabAlignment: TabAlignment.start,
                       labelColor: Colors.white,
-                      unselectedLabelColor: Colors.white.withOpacity(0.7),
+                      unselectedLabelColor: Colors.white.withValues(alpha:0.7),
                       indicatorColor: Colors.white,
                       indicatorWeight: 3,
                       labelStyle: const TextStyle(

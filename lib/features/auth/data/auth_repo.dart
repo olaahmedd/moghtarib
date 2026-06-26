@@ -137,7 +137,7 @@ class AuthRepo {
           );
         }
 
-        // نقوم بعمل Parse للبيانات المرجعة كـ UserModel
+    
         final userData = map['user'] != null ? map['user'] : map;
         if (userData['id'] != null) {
           await CacheHelper.setValue(key: 'userId', value: userData['id'].toString());
@@ -150,7 +150,6 @@ class AuthRepo {
     );
   }
 
-  // ==================== GET DEPARTMENTS ====================
   Future<Either<String, List<dynamic>>> getDepartments() async {
     var response = await ApiHelper.get(
       endPoint: '/api/Department',

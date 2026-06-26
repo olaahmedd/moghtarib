@@ -1,4 +1,4 @@
-import 'package:shared_preferences/shared_preferences.dart';//دي طريقة عشان اخزن البيانات بشكل دائم عشان لو قفلت التطبيق افضل logged in
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class CacheHelper{
 

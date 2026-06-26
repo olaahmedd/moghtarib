@@ -1,13 +1,6 @@
 import 'dart:convert';
 
 class JwtRoleParser {
-  /// Extracts role from JWT payload **without** calling any backend endpoint.
-  ///
-  /// Reads role claim from:
-  /// - `http://schemas.microsoft.com/ws/2008/06/identity/claims/role`
-  /// - fallback keys: `role`, `Role`, `userRole`, `UserRole`
-  ///
-  /// Returns raw role string (e.g. `Admin`) or null.
   static String? extractRole(String token) {
     try {
       final parts = token.split('.');
@@ -35,7 +28,7 @@ class JwtRoleParser {
   }
 
   static String _padBase64Url(String input) {
-    // base64Url.decode expects proper padding.
+    
     final mod = input.length % 4;
     if (mod == 2) return '$input==';
     if (mod == 3) return '$input=';

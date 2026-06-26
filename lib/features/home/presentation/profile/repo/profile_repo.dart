@@ -8,19 +8,19 @@ import 'package:moghtarib/features/home/presentation/profile/model/user_profile_
 class ProfileRepo {
   final Dio _dio;
 
-  // هنا بنباصي الـ Dio أو نخليه يعمل Initialize لنفسه مع الـ BaseUrl الموحد بتاعك
+  
   ProfileRepo({Dio? dio}) : _dio = dio ?? Dio(
     BaseOptions(
-      baseUrl: EndPoints.baseUrl, // تأكدي إن المتغير ده بيقشر على السيرفر الصح بتاعك
+      baseUrl: EndPoints.baseUrl,
       connectTimeout: const Duration(seconds: 15),
       receiveTimeout: const Duration(seconds: 15),
     ),
   );
 
-  // دالة جلب بيانات المستخدم الحالي بالـ Token
+  
   Future<UserProfileModel> getCurrentUser() async {
     try {
-      // لقط الـ Token المتسيف في الـ Cache عندك أثناء الـ Login
+      
       final String? token = CacheHelper.getValue(CacheKeys.accessToken)?.toString();
 
       final response = await _dio.get(

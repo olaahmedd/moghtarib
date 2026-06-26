@@ -7,7 +7,7 @@ class ProfileCubit extends Cubit<ProfileStates> {
 
   ProfileCubit(this.profileRepo) : super(ProfileInitialState());
 
-  // دالة جلب بيانات المستخدم
+  
   Future<void> getUserProfile() async {
     emit(ProfileLoadingState());
     try {

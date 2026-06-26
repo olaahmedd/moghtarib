@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../model/user_model.dart';
 import '../view/user_details_view.dart';
-//import '../../../../core/utils/app_colors.dart';
 import '../cubit/users_cubit/users_cubit.dart';
 import '../cubit/users_cubit/users_state.dart';
 class UsersTabView extends StatefulWidget {

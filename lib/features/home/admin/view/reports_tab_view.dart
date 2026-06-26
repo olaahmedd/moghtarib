@@ -76,7 +76,7 @@ class ReportsTabView extends StatelessWidget {
           return Container(
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.08),
+              color: Colors.white.withValues(alpha:0.08),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: Colors.white10),
             ),
@@ -123,7 +123,7 @@ class ReportsTabView extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  // استخدام الـ innerContext الصحيح الذي يرى الـ Provider
+                                  
                                   innerContext.read<ReportCubit>().deleteReport(report.id.toString());
                                   Navigator.pop(dialogContext);
                                 },

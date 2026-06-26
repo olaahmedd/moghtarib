@@ -19,12 +19,12 @@ class ReportDetailsView extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // الجزء العلوي: الأفاتار والاسم في صف واحد
+            
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-              // color:const Color(0xFF6A11CB), 
+             
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
@@ -47,7 +47,7 @@ class ReportDetailsView extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // قائمة التفاصيل
+            
             _buildDetailCard(Icons.message, "Report Message", report.text ?? "No message"),
             _buildDetailCard(Icons.phone, "Phone", report.user?.phoneNumber ?? "N/A"),
             _buildDetailCard(Icons.chat, "WhatsApp", report.user?.whatsappNumber ?? "N/A"),
@@ -81,7 +81,7 @@ class ReportDetailsView extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-         color: Colors.white.withOpacity(0.08), // لون خلفية البطاقات الموحد
+         color: Colors.white.withOpacity(0.08), 
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.white10),
       ),

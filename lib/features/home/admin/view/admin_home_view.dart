@@ -9,6 +9,8 @@ import 'package:moghtarib/features/home/admin/cubit/users_cubit/users_cubit.dart
 import 'package:moghtarib/features/home/admin/view/users_tab_view.dart';
 import 'package:moghtarib/features/home/admin/view/reports_tab_view.dart';
 import 'package:moghtarib/features/home/admin/view/sanaiee_tab_view.dart';
+import 'package:moghtarib/features/home/sanaiee/cubit/department_cubit/department_cubit.dart';
+import 'package:moghtarib/features/home/sanaiee/repo/sanaiee_repo.dart';
 import 'package:moghtarib/features/home/sanaiee/view/add_department_tap_view.dart';
 
 class AdminHomeView extends StatelessWidget {
@@ -18,7 +20,7 @@ class AdminHomeView extends StatelessWidget {
   Widget build(BuildContext context) {
    
     final adminRepo = AdminRepo();
-
+    final sanaieeRepo = SanaieeRepo();
     return MultiBlocProvider(
       providers: [
         BlocProvider<UsersCubit>(
@@ -28,7 +30,11 @@ class AdminHomeView extends StatelessWidget {
        
           create: (_) => SanaieeCubit(adminRepo)..fetchSanaiee(), 
         ),
-        BlocProvider<ReportCubit>(create: (_) => ReportCubit(adminRepo)..fetchReports()),
+        BlocProvider<ReportCubit>(create: (_) => ReportCubit(adminRepo)..fetchReports(),
+        ),
+        BlocProvider<DepartmentCubit>(
+          create: (_) => DepartmentCubit(sanaieeRepo), 
+        ),
       ],
       child: DefaultTabController(
         length: 4,

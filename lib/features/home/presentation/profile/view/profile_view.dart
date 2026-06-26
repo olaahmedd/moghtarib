@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moghtarib/core/cache/cache_helper.dart';
-//import 'package:moghtarib/core/cache/cache_keys.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:moghtarib/features/home/presentation/profile/cubit/profile_state.dart';
 import '../cubit/profile_cubit.dart';
@@ -110,7 +109,7 @@ _buildProfileInfoTile(
                       Text(
                         state.errorMessage,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 16, color: Colors.white70), // نص أبيض خفيف يتناسب مع الخلفية السوداء
+                        style: const TextStyle(fontSize: 16, color: Colors.white70), 
                       ),
                       const SizedBox(height: 20),
                       ElevatedButton(
@@ -144,16 +143,16 @@ _buildProfileInfoTile(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xff121212), // رمادي داكن مخصص للـ Dark Mode لمنع بهتان التصميم
+        color: const Color(0xff121212), 
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFF2575FC).withValues(alpha: 0.25)), // حدود بنفسجية رقيقة ومضيئة
+        border: Border.all(color: const Color(0xFF2575FC).withValues(alpha: 0.25)), 
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: const Color(0xFF2575FC).withValues(alpha: 0.15), // خلفية بنفسجية شفافة خفيفة جداً للايقونة
+              color: const Color(0xFF2575FC).withValues(alpha: 0.15), 
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(icon, color: const Color(0xFF2575FC), size: 26),

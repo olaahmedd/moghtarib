@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../model/user_model.dart'; // تأكدي من صحة المسار للموديل في مشروعك
+import '../model/user_model.dart'; 
 
 class UserDetailsView extends StatelessWidget {
   final UserModel user;

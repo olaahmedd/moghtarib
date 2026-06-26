@@ -1,14 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:moghtarib/core/cache/cache_helper.dart';
 import 'package:moghtarib/features/home/admin/model/report_model.dart';
-
 import '../../../../core/network/api_helper.dart';
 import '../../../../core/network/end_points.dart';
 import '../model/user_model.dart';
 import'package:moghtarib/features/home/admin/model/sanaiee_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 class AdminRepo {
-  
   Future<Either<String, List<UserModel>>> getAllUsers({String? searchText}) async {
     final hasSearch = searchText != null && searchText.trim().isNotEmpty;
 
@@ -50,7 +48,7 @@ Future<Either<String, bool>> deleteUser({required String userId}) async {
 
   return result.map((responseBody) => true);
 }
-  //sanaiee
+  
  Future<Either<String, List<SanaieeModel>>> getAllSanaieeia({String? searchText}) async {
     final hasSearch = searchText != null && searchText.trim().isNotEmpty;
 
@@ -133,17 +131,17 @@ final String adminId = CacheHelper.getValue('userId')?.toString() ?? "";
   );
 
   return result.map((responseBody) {
-   
+ 
     if (responseBody is List) {
       return responseBody.map((e) => ReportModel.fromJson(e as Map<String, dynamic>)).toList();
     }
     
     
     if (responseBody is Map<String, dynamic>) {
-       final dynamic data = responseBody['data'] ?? responseBody['result'] ?? responseBody;
-       if (data is List) {
-         return data.map((e) => ReportModel.fromJson(e as Map<String, dynamic>)).toList();
-       }
+        final dynamic data = responseBody['data'] ?? responseBody['result'] ?? responseBody;
+        if (data is List) {
+        return data.map((e) => ReportModel.fromJson(e as Map<String, dynamic>)).toList();
+        }
     }
     
     return <ReportModel>[];
