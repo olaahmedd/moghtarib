@@ -5,7 +5,9 @@ import'package:moghtarib/core/cache/cache_keys.dart';
 import'package:dartz/dartz.dart';
 import'package:moghtarib/core/network/api_helper.dart';
 import 'package:moghtarib/features/auth/model/user_model.dart';
+
 class AuthRepo {
+  // ==================== FETCH USER ROLE ====================
   Future<String?> fetchUserRole() async {
     // Reads access token from cache and calls UserRoles endpoint.
     final token = CacheHelper.getValue(CacheKeys.accessToken) as String?;
@@ -35,9 +37,7 @@ class AuthRepo {
   }
 
   // ==================== LOGIN FUNCTION ====================
-
   Future<Either<String, UserModel>> login({
-
     required String email, 
     required String password,
   }) async {
@@ -63,15 +63,14 @@ class AuthRepo {
         if (map[CacheKeys.refreshToken] != null) {
           await CacheHelper.setValue(key: CacheKeys.refreshToken, value: map[CacheKeys.refreshToken]);
         }
-/////////id
-       final userData = map['user'] ?? map;
-      if (userData['id'] != null) {
-    await CacheHelper.setValue(key: 'userId', value: userData['id'].toString());
-   }
-   if (userData['userName'] != null) {
-  await CacheHelper.setValue(key: 'userName', value: userData['userName'].toString());
-}
 
+        final userData = map['user'] ?? map;
+        if (userData['id'] != null) {
+          await CacheHelper.setValue(key: 'userId', value: userData['id'].toString());
+        }
+        if (userData['userName'] != null) {
+          await CacheHelper.setValue(key: 'userName', value: userData['userName'].toString());
+        }
 
         // إرجاع الموديل
         return right(UserModel.fromJson(map['user'] ?? map)); 
@@ -80,7 +79,6 @@ class AuthRepo {
   }
 
   // ==================== REGISTER FUNCTION ====================
-  // تم تغيير النوع المرتجع إلى UserModel ليدخل التطبيق فوراً بعد التسجيل
   Future<Either<String, UserModel>> register({
     required String username,
     required String firstName,
@@ -91,8 +89,9 @@ class AuthRepo {
     required String type,
     required String phoneNumber,
     required String whatsappNumber,
+    String? departmentId, // استقبلنا المتغير هنا كـ اختياري من الـ Cubit
   }) async {
-    print("DEBUG REGISTER DATA: {'email': $email, 'userName': $username}");
+    print("DEBUG REGISTER DATA: {'email': $email, 'userName': $username, 'departmentId': $departmentId}");
     
     var response = await ApiHelper.post(
       endPoint: EndPoints.register,
@@ -106,6 +105,13 @@ class AuthRepo {
         'nationalId': nationalId,
         'type': type,
         'whatsappNumber': whatsappNumber,
+        
+        // 🎯 التعديل السحري: لو الحساب صنايعي ومختار قسم بيبعت الرقم، غير كده بيبعت null صريحة عشان السيرفر ما يضربش 500
+        'departmentId': (type == 'Sanaiee' && departmentId != null && departmentId != "0") 
+            ? (int.tryParse(departmentId)) 
+            : null,
+            
+        'websiteURL': "string", // الكي دا السيرفر طالبه إجباري في السواجر فبنبعته كـ string افتراضي
       },
     );
 
@@ -117,7 +123,7 @@ class AuthRepo {
       (map) async {
         print("DEBUG REGISTER SUCCESS MAP: $map");
         
-        // 🔥 خطوة ذكية: بما أن السيرفر أعاد التوكنز عند النجاح، نقوم بحفظها فوراً هنا
+        // حفظ التوكنز عند النجاح
         if (map[CacheKeys.accessToken] != null || map['token'] != null) {
           await CacheHelper.setValue(
             key: CacheKeys.accessToken, 
@@ -132,15 +138,32 @@ class AuthRepo {
         }
 
         // نقوم بعمل Parse للبيانات المرجعة كـ UserModel
-        // إذا كان السيرفر يرسل بيانات المستخدم بداخل كائن 'user' نأخذه، وإذا كان يرسلها في الـ Map المباشر نمرر الـ map نفسه
         final userData = map['user'] != null ? map['user'] : map;
         if (userData['id'] != null) {
-      await CacheHelper.setValue(key: 'userId', value: userData['id'].toString());
-     }
-     if (userData['userName'] != null) {
-  await CacheHelper.setValue(key: 'userName', value: userData['userName'].toString());
-}
+          await CacheHelper.setValue(key: 'userId', value: userData['id'].toString());
+        }
+        if (userData['userName'] != null) {
+          await CacheHelper.setValue(key: 'userName', value: userData['userName'].toString());
+        }
         return right(UserModel.fromJson(userData));
+      },
+    );
+  }
+
+  // ==================== GET DEPARTMENTS ====================
+  Future<Either<String, List<dynamic>>> getDepartments() async {
+    var response = await ApiHelper.get(
+      endPoint: '/api/Department',
+    );
+
+    return response.fold(
+      (error) {
+        print("DEBUG GET DEPARTMENTS ERROR: $error");
+        return left(error);
+      },
+      (listData) {
+        print("DEBUG GET DEPARTMENTS SUCCESS: $listData");
+        return right(listData as List<dynamic>);
       },
     );
   }

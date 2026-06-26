@@ -8,33 +8,14 @@ import 'package:moghtarib/features/auth/cubit/register/register_cubit.dart';
 import 'package:moghtarib/features/auth/cubit/register/register_state.dart';
 
 import 'package:moghtarib/core/routes/app_routes.dart';
-
-
-
-
-
-class DefaultTextField extends StatelessWidget {
-  final TextEditingController controller;
-  final String hintText;
-  const DefaultTextField({super.key, required this.controller, required this.hintText});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: hintText,
-        filled: true,
-        fillColor: Colors.grey.shade100,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
-      ),
-    );
-  }
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class RegisterView extends StatelessWidget {
-  RegisterView({super.key});
-
+class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
@@ -46,14 +27,17 @@ class RegisterView extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
+  // 🎯 المتغير اللي بيشيل الـ id بتاع المهنة المختارة من السيرفر
+  String? _selectedDepartmentId;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => RegisterCubit(),
+      // 🎯 بنادي على دالة جلب الأقسام فوراً مع إنشاء الـ Cubit عشان البيانات تجهز والشاشة بتفتح
+      create: (BuildContext context) => RegisterCubit()..getDepartmentsData(),
       child: BlocConsumer<RegisterCubit, RegisterStates>(
         listener: (context, state) {
           if (state is RegisterSuccessState) {
-            // 1. إظهار رسالة النجاح
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Account Created Successfully'), 
@@ -61,7 +45,6 @@ class RegisterView extends StatelessWidget {
               ),
             );
 
-            
             final cubit = RegisterCubit.get(context);
             final normalizedRole = (cubit.selectedRole ?? '').toLowerCase();
 
@@ -83,13 +66,18 @@ class RegisterView extends StatelessWidget {
                 nextRoute = AppRoutes.welcome;
             }
 
-            
             Navigator.pushNamedAndRemoveUntil(context, nextRoute, (route) => false);
           }
           
           if (state is RegisterErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.error), backgroundColor: Colors.red),
+            );
+          }
+          
+          if (state is RegisterGetDepartmentsErrorState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('خطأ في تحميل المهن: ${state.error}'), backgroundColor: Colors.orange),
             );
           }
         },
@@ -169,11 +157,6 @@ class RegisterView extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       
-                      // DefaultTextField(
-                      //   controller: _nationalIdController,
-                      //   hintText: 'Enter National ID',
-                        
-                      // ),
                       TextFormField(
                         controller: _nationalIdController,
                         keyboardType: TextInputType.number,
@@ -181,16 +164,14 @@ class RegisterView extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       
+                      // 1️⃣ قائمة اختيار نوع الحساب الـ Role
                       DropdownButtonFormField<String>(
                         value: cubit.selectedRole,
                         hint: const Text('Select role', style: TextStyle(color: Colors.grey)),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.grey.shade100,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                         ),
                         icon: const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
                         items: ['Admin', 'Student', 'Sanaiee', 'Semsar'].map((String role) {
@@ -202,6 +183,11 @@ class RegisterView extends StatelessWidget {
                         onChanged: (String? newValue) {
                           if (newValue != null) {
                             cubit.changeSelectedRole(newValue);
+                            if (newValue != 'Sanaiee') {
+                              setState(() {
+                                _selectedDepartmentId = null;
+                              });
+                            }
                           }
                         },
                         validator: (value) {
@@ -211,6 +197,44 @@ class RegisterView extends StatelessWidget {
                           return null;
                         },
                       ),
+                      
+                      // 🎯 2️⃣ قائمة المهن الديناميكية: تظهر فقط عند اختيار 'Sanaiee' وتقرأ من السيرفر مباشر
+                      if (cubit.selectedRole == 'Sanaiee') ...[
+                        const SizedBox(height: 16),
+                        state is RegisterGetDepartmentsLoadingState
+                            ? const Center(child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: CircularProgressIndicator(color: Colors.white),
+                              ))
+                            : DropdownButtonFormField<String>(
+                                value: _selectedDepartmentId,
+                                hint: const Text('Choose your department ', style: TextStyle(color: Colors.grey)),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.grey.shade100,
+                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+                                ),
+                                icon: const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
+                                // 🎯 اللستة هنا بتقرأ من البيانات الجاية من الـ API مباشرة
+                                items: cubit.departments.map((dept) {
+                                  return DropdownMenuItem<String>(
+                                    value: dept['id'].toString(), // تحويل الـ Id لـ String عشان الـ Dropdown
+                                    child: Text(dept['name'] ?? '', style: const TextStyle(color: Colors.black)),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    _selectedDepartmentId = newValue;
+                                  });
+                                },
+                                validator: (value) {
+                                  if (cubit.selectedRole == 'Sanaiee' && value == null) {
+                                    return 'Please select your department';
+                                  }
+                                  return null;
+                                },
+                              ),
+                      ],
                       const SizedBox(height: 16),
                       
                       TextFormField(
@@ -251,39 +275,43 @@ class RegisterView extends StatelessWidget {
                         height: 55,
                         child: state is RegisterLoadingState
                             ? const Center(child: CircularProgressIndicator(color: Color(0xFFF83758)))
-                            : Container( width: double.infinity,
-                    height: 52,
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF6A11CB), Color(0xFF2575FC)],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF2575FC).withOpacity(0.3),
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                              child: ElevatedButton(
-                                  onPressed: () {
-                                    if (_formKey.currentState!.validate()) {
-                                     cubit.userRegister(
-                              username: _userNameController.text,
-                              firstname: _firstNameController.text,
-                              lastname: _lastNameController.text,
-                              nationalid: _nationalIdController.text,
-                              role: cubit.selectedRole ?? '', 
-                              phonenumber: _phoneController.text,
-                              password: _passwordController.text,
-                              email: _emailController.text,
-                                                         whatsappnumber: _whatsappController.text,
-                                );
-                                    }
-                                  },
+                            : Container( 
+                                width: double.infinity,
+                                height: 52,
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    colors: [Color(0xFF6A11CB), Color(0xFF2575FC)],
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF2575FC).withOpacity(0.3),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: ElevatedButton(
+                                // 🎯 التعديل جوه زرار الـ ElevatedButton في شاشة الـ Register
+onPressed: () {
+  if (_formKey.currentState!.validate()) {
+    cubit.userRegister(
+      username: _userNameController.text,
+      firstname: _firstNameController.text,
+      lastname: _lastNameController.text,
+      nationalid: _nationalIdController.text,
+      role: cubit.selectedRole ?? '', 
+      phonenumber: _phoneController.text,
+      password: _passwordController.text,
+      email: _emailController.text,
+      whatsappnumber: _whatsappController.text,
+      // 🎯 تعديل الحماية هنا: لو مش صنايعي يبعت null فوراً للسيرفر
+      departmentId: cubit.selectedRole == 'Sanaiee' ? _selectedDepartmentId : null, 
+    );
+  }
+},
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.transparent,
                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -294,7 +322,7 @@ class RegisterView extends StatelessWidget {
                                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white),
                                   ),
                                 ),
-                            ),
+                              ),
                       ),
                       const SizedBox(height: 20),
                     ],
@@ -322,4 +350,3 @@ class RegisterView extends StatelessWidget {
     );
   }
 }
-

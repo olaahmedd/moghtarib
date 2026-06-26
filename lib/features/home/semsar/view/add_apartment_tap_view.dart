@@ -115,17 +115,16 @@ class _AddApartmentTabViewState extends State<AddApartmentTabView> {
           baseImageURL: _baseImage != null ? _baseImage!.path : widget.apartmentToEdit!.baseImageURL, 
         );
 
-        // 💡 هنا الحل: لو المستخدم مأختارش صورة جديدة، بنعمل File وهمي شايل مسار الصورة القديمة
-        // عشان نرضي الـ Validation بتاع الـ Cubit والـ Repo وما يطلعش خطأ الـ Required
+       
         File? imageToSend = _baseImage;
         if (imageToSend == null && widget.apartmentToEdit!.baseImageURL != null) {
           imageToSend = File(widget.apartmentToEdit!.baseImageURL!);
         }
 
-        // بنمرر الـ imageToSend للـ Cubit
+        
         context.read<ApartmentCubit>().updateApartment(
           apartment: updatedApartment,
-          baseImage: _baseImage, // ✅ كدة الـ Cubit هيشوفها مش null ومش هيعترض
+          baseImage: _baseImage, 
         );
 
       } else {
@@ -178,15 +177,28 @@ class _AddApartmentTabViewState extends State<AddApartmentTabView> {
                 colors: [Color(0xFF6A11CB), Color(0xFF2575FC)],
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  isEditMode ? 'Edit Apartment' : 'Add Apartment', 
-                  style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
+            child: Row( 
+  children: [
+    
+    IconButton(
+      icon: const Icon(Icons.arrow_back, color: Colors.white, size: 24),
+      onPressed: () {
+        Navigator.pop(context); 
+      },
+    ),
+    const SizedBox(width: 8), 
+    
+    
+    Text(
+      isEditMode ? 'Edit Apartment' : 'Add Apartment',
+      style: const TextStyle(
+        color: Colors.white, 
+        fontSize: 22, 
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ],
+),
           ),
 
           Expanded(

@@ -21,6 +21,8 @@ abstract class EndPoints{
   static const String refresh = '/refresh_token';
   static const String changePas = '/api/Account/ChangePassword';
   static const String searchapartment = '/api/Apartment/Search';
+  static const String getDepartment = '/api/Department';
+  
 }
 
 

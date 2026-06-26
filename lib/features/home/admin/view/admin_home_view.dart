@@ -9,6 +9,7 @@ import 'package:moghtarib/features/home/admin/cubit/users_cubit/users_cubit.dart
 import 'package:moghtarib/features/home/admin/view/users_tab_view.dart';
 import 'package:moghtarib/features/home/admin/view/reports_tab_view.dart';
 import 'package:moghtarib/features/home/admin/view/sanaiee_tab_view.dart';
+import 'package:moghtarib/features/home/sanaiee/view/add_department_tap_view.dart';
 
 class AdminHomeView extends StatelessWidget {
   const AdminHomeView({super.key});
@@ -30,7 +31,7 @@ class AdminHomeView extends StatelessWidget {
         BlocProvider<ReportCubit>(create: (_) => ReportCubit(adminRepo)..fetchReports()),
       ],
       child: DefaultTabController(
-        length: 3,
+        length: 4,
         child: BaseHomeScreen(
           drawerTitle: 'Admin',
           onLogout: null,
@@ -39,6 +40,8 @@ class AdminHomeView extends StatelessWidget {
               Material(
                 color: AppColors.scaffoldBackground,
                 child: TabBar(
+                  isScrollable: true,
+                  tabAlignment: TabAlignment.start,
                   labelColor: Colors.white,
                   unselectedLabelColor: Colors.white.withValues(alpha:0.7),
                   indicatorColor: Colors.white,
@@ -46,6 +49,7 @@ class AdminHomeView extends StatelessWidget {
                     Tab(text: 'Users'),
                     Tab(text: 'Sanaiee'),
                     Tab(text: 'Reports'),
+                    Tab(text: 'Add department'),
                   ],
                 ),
               ),
@@ -55,6 +59,7 @@ class AdminHomeView extends StatelessWidget {
                     UsersTabView(),
                     SanaieeTabView(), 
                     ReportsTabView(),
+                    AddDepartmentTabView(),
                   ],
                 ),
               ),

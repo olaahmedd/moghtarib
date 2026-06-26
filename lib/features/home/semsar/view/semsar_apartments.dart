@@ -259,7 +259,7 @@ class _MyApartmentsScreenState extends State<MyApartmentsScreen> {
                                   //],// 👈 زرار عرض التفاصيل بعد التعديل
 GestureDetector(
   onTap: () {
-    // 1. تحويل داتا الشقة الحالية لقالب (Model) يفهمه كود صفحة التفاصيل
+   
     final apartmentModel = AllApartmentModel.fromJson(apartment);
 
     // 2. الأمر اللي بيفتح الشاشة الجديدة فوراً ويظهرها للمستخدم
@@ -267,10 +267,10 @@ GestureDetector(
   context,
   MaterialPageRoute(
     builder: (context) => BlocProvider(
-      // 🎯 شيلنا الاسم وباصينا الـ Repo علطول للكونستركتور زي ما الكيوبيت بتاعك متعود
+      
       create: (context) => ApartmentCubit(ApartmentRepo()), 
       child: ApartmentDetailsView(
-        // 🎯 عدلنا الاسم لـ apartmentModel عشان يطابق المتغير اللي عرفتيه في سطر 519
+        
         apartment: apartmentModel, 
       ),
     ),

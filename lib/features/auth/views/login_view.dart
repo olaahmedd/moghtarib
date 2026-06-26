@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:moghtarib/core/utils/app_colors.dart';
 import 'package:moghtarib/core/utils/jwt_role_parser.dart';
 import 'package:moghtarib/features/auth/cubit/login/login_cubit.dart';
@@ -22,7 +23,11 @@ class LoginView extends StatelessWidget {
             
             final token = state.userModel.accessToken;
             final userRole = JwtRoleParser.extractRole(token ?? '');
-
+            Map<String, dynamic> decodedToken = JwtDecoder.decode(token!);
+            String role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']?.toString() ?? 
+                decodedToken['role']?.toString() ?? '';
+  
+            role = role.trim().toLowerCase();
             
             if (userRole == 'Admin') {
               Navigator.pushReplacement(

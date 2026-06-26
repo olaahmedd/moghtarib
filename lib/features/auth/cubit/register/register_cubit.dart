@@ -5,8 +5,6 @@ import 'package:moghtarib/core/cache/cache_keys.dart';
 import 'package:moghtarib/features/auth/cubit/register/register_state.dart';
 import 'package:moghtarib/features/auth/data/auth_repo.dart';
 import 'package:moghtarib/core/utils/jwt_role_parser.dart';
-import 'package:moghtarib/core/utils/role_based_navigation.dart';
-
 class RegisterCubit extends Cubit<RegisterStates> {
   RegisterCubit() : super(RegisterInitialState());
 
@@ -17,6 +15,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
   bool isPasswordHidden = true;
   bool isConfirmPasswordHidden = true;
   String? selectedRole;
+  List<dynamic> departments = []; 
 
   void changePasswordVisibility() {
     isPasswordHidden = !isPasswordHidden;
@@ -33,7 +32,24 @@ class RegisterCubit extends Cubit<RegisterStates> {
     emit(RegisterChangeRoleState()); 
   }
 
- 
+  void getDepartmentsData() async {
+    emit(RegisterGetDepartmentsLoadingState());
+
+    var result = await repo.getDepartments();
+
+    result.fold(
+      (error) {
+        print("CUBIT GET DEPARTMENTS ERROR: $error");
+        emit(RegisterGetDepartmentsErrorState(error));
+      },
+      (data) {
+        departments = data; 
+        print("CUBIT GET DEPARTMENTS SUCCESS, COUNT: ${departments.length}");
+        emit(RegisterGetDepartmentsSuccessState());
+      },
+    );
+  }
+
   void userRegister({
     required String username,
     required String firstname,
@@ -44,6 +60,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
     required String role,
     required String phonenumber,
     required String whatsappnumber,
+    String? departmentId, 
   }) async {
     emit(RegisterLoadingState());
 
@@ -57,6 +74,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
       nationalId: nationalid,
       type: role,
       whatsappNumber: whatsappnumber,
+      departmentId: departmentId, 
     );
 
     await result.fold(
@@ -67,7 +85,6 @@ class RegisterCubit extends Cubit<RegisterStates> {
       (userModel) async {
         print("DEBUG CUBIT REGISTER SUCCESS: ${userModel.toString()}");
 
-    
         await CacheHelper.setValue(
           key: CacheKeys.accessToken, 
           value: userModel.accessToken, 
@@ -87,7 +104,6 @@ class RegisterCubit extends Cubit<RegisterStates> {
         }
 
         final normalizedRole = finalRole.toLowerCase();
-        
         
         await CacheHelper.setValue(
           key: CacheKeys.userRole, 
